@@ -4,7 +4,7 @@ import path from "path";
 import {visualizer} from "rollup-plugin-visualizer";
 import strip from "@rollup/plugin-strip";
 import typescript from "@rollup/plugin-typescript";
-let { resolve } = path;
+const { resolve } = path;
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
   return {
