@@ -2,18 +2,18 @@ import { uiContext } from "../ui";
 import { DynamicallyCrudOptions, UseCrudProps } from "../d";
 import { computed } from "vue";
 
-let defaultCrudOptions = {
+const defaultCrudOptions = {
   commonOptions(ctx?: UseCrudProps<any, any>): any {
     return {};
   },
   defaultOptions(opts: { t: any }): DynamicallyCrudOptions<any> {
-    let { t } = opts;
-    let ct = (name: string) => {
+    const { t } = opts;
+    const ct = (name: string) => {
       return computed(() => {
         return t(name);
       });
     };
-    let ui = uiContext.get();
+    const ui = uiContext.get();
     return {
       settings: {
         plugins: {
