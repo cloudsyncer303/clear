@@ -17,12 +17,12 @@ function createAsyncComponent(es: any) {
   });
 }
 function installAsyncComponent(app: any, name: string, es: any, options: any) {
-  const asyncComponent = createAsyncComponent(es);
+  var asyncComponent = createAsyncComponent(es);
   app.component(name, asyncComponent, options);
 }
 
 function installAsyncComponents(app: any, modules: any, excludes: any, pickNameExp: any, transform: any) {
-  const imports = transformFromGlob(modules, pickNameExp, transform);
+  var imports = transformFromGlob(modules, pickNameExp, transform);
   forEach(imports, (item, key) => {
     if (excludes && excludes.indexOf(key) != -1) {
       return;
@@ -32,7 +32,7 @@ function installAsyncComponents(app: any, modules: any, excludes: any, pickNameE
 }
 
 function installSyncComponents(app: any, modules: any, excludes: any, pickNameExp: any, transform: any) {
-  const imports: any = transformFromGlob(modules, pickNameExp, transform);
+  var imports: any = transformFromGlob(modules, pickNameExp, transform);
   forEach(imports, (item: any, key) => {
     if (excludes && excludes.indexOf(key)) {
       return;
@@ -41,13 +41,13 @@ function installSyncComponents(app: any, modules: any, excludes: any, pickNameEx
   });
 }
 function transformFromGlob(modules: any, pickNameExp?: any, transform?: any) {
-  const components: any = {};
+  var components: any = {};
   if (pickNameExp == null) {
     pickNameExp = /.*\/(.+).(vue|jsx|tsx)/;
   }
   forEach(modules, (item, key) => {
     // 从路径提取组件名称
-    const result = key.match(pickNameExp);
+    var result = key.match(pickNameExp);
     if (result?.length <= 1) {
       console.error(`"${key}" can't pick a component name,this component can't register`);
       return;
@@ -67,8 +67,8 @@ function transformFromGlob(modules: any, pickNameExp?: any, transform?: any) {
 }
 
 function loadAsyncComponentFromGlob(modules: any) {
-  const imports: any = transformFromGlob(modules);
-  const map: any = {};
+  var imports: any = transformFromGlob(modules);
+  var map: any = {};
   forEach(imports, (item, key) => {
     map[key] = createAsyncComponent(item);
   });
@@ -76,8 +76,8 @@ function loadAsyncComponentFromGlob(modules: any) {
 }
 
 function loadComponentFromGlob(modules: any) {
-  const imports = transformFromGlob(modules);
-  const map: any = {};
+  var imports = transformFromGlob(modules);
+  var map: any = {};
   forEach(imports, (item, key) => {
     map[key] = item.default;
   });
