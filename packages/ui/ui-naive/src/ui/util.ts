@@ -7,9 +7,9 @@ export default {
     if (uiContext?.ref?.value == null) {
       throw new Error("请先安装ui：app.use(UiNaive);");
     }
-    const message = useMessage();
-    const notification = useNotification();
-    const messageBox = useDialog();
+    let message = useMessage();
+    let notification = useNotification();
+    let messageBox = useDialog();
     // @ts-ignore
     uiContext.ref.value.init({ message, notification, messageBox });
   }
