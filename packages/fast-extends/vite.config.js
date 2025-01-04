@@ -6,7 +6,7 @@ import strip from "@rollup/plugin-strip";
 import DefineOptions from "unplugin-vue-define-options/vite";
 import typescript from "@rollup/plugin-typescript";
 import _ from "lodash";
-const { resolve } = path;
+var { resolve } = path;
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
   let build = {};
@@ -27,7 +27,7 @@ export default ({ command, mode }) => {
     };
   }
 
-  const options = {
+  var options = {
     base: "./",
     plugins: [DefineOptions(), vueJsx(), vue()],
     esbuild: {
