@@ -9,8 +9,8 @@ function setConfig(app: any, config: FsEditorConfig) {
 
 export default {
   install(app: any, options: FsEditorConfig) {
-    const newTypes = types();
-    const { addTypes } = useTypes();
+    let newTypes = types();
+    let { addTypes } = useTypes();
     addTypes(newTypes);
     setConfig(app, options);
   }
