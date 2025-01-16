@@ -1,11 +1,11 @@
 export async function getCountries() {
-  var asyncModules = import.meta.glob("./phoneCodeCountries.ts");
+  const asyncModules = import.meta.glob("./phoneCodeCountries.ts");
   // @ts-ignore
-  var { countries } = await asyncModules["./phoneCodeCountries.ts"]();
+  const { countries } = await asyncModules["./phoneCodeCountries.ts"]();
   return countries;
 }
 export async function getCountryByValue(value: any): Promise<any> {
-  var countries = await getCountries();
+  const countries = await getCountries();
   let ret = null;
   if (value != null) {
     if (value.countryCode != null) {
