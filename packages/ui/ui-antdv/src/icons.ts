@@ -34,7 +34,7 @@ import {
   InfoCircleOutlined
 } from "@ant-design/icons-vue";
 
-const icons: any = {
+let icons: any = {
   SearchOutlined,
   PlusCircleOutlined,
   PlusOutlined,
@@ -70,7 +70,7 @@ const icons: any = {
   InfoCircleOutlined
 };
 export default function (app: any) {
-  for (const key in icons) {
+  for (let key in icons) {
     app.component(key, icons[key]);
   }
 }
