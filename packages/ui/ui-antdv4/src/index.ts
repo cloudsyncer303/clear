@@ -9,7 +9,7 @@ export type UiSetupOptions = {
 };
 
 function set() {
-  const antdvUi = new Antdv({
+  let antdvUi = new Antdv({
     Message: message,
     Notification: notification,
     MessageBox: Modal
@@ -20,7 +20,7 @@ function set() {
 
 export default {
   install(app: any, options: UiSetupOptions = {}) {
-    const antdvUi = set();
+    let antdvUi = set();
     if (options.setupIcons !== false) {
       setupIcons(app);
     }
