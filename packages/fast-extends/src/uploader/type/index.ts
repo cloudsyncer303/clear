@@ -12,13 +12,13 @@ function setConfig(app: any, config: FsUploaderOptions) {
   // app.config.globalProperties.$fs_uploader_config = merge(defaultConfig, config);
 }
 //兼容旧版本
-const AllSuccessValidator = AllUploadSuccessValidator;
+let AllSuccessValidator = AllUploadSuccessValidator;
 export { AllSuccessValidator };
 
 export default {
   install(app: any, options: FsUploaderOptions) {
-    const newTypes = types();
-    const { addTypes } = useTypes();
+    let newTypes = types();
+    let { addTypes } = useTypes();
     addTypes(newTypes);
     setConfig(app, options);
   }
