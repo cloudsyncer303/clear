@@ -1,10 +1,10 @@
-let DEBUG_WITH_CALLER = true;
+const DEBUG_WITH_CALLER = true;
 function getCallerInfo() {
-  let e = new Error();
+  const e = new Error();
   return e.stack?.split("\n")[3];
 }
 
-let blank = (...args: any) => {};
+const blank = (...args: any) => {};
 
 function logInfo(...args: any) {
   // @ts-ignore
@@ -21,31 +21,31 @@ function logError(...args: any) {
   // eslint-disable-next-line prefer-rest-params
   console.error.apply(this, arguments);
 }
-let error = (...args: any) => {
+const error = (...args: any) => {
   logError("%c [error]", "font-weight: 600;", ...args);
 };
-let warn = (...args: any) => {
+const warn = (...args: any) => {
   logWarn("%c [warn]", "font-weight: 600;", ...args);
 };
-let info = (...args: any) => {
+const info = (...args: any) => {
   logInfo("%c [info]", "font-weight: 600;", ...args);
 };
-let debug = (...args: any) => {
+const debug = (...args: any) => {
   if (!console.log) {
     return;
   }
-  let callerInfo = getCallerInfo();
+  const callerInfo = getCallerInfo();
   if (DEBUG_WITH_CALLER) {
-    let log = ["%c [debug]", "font-weight: 600;", ...args];
+    const log = ["%c [debug]", "font-weight: 600;", ...args];
     logInfo(...log);
-    let caller = ["%c " + callerInfo, "color:#999"];
+    const caller = ["%c " + callerInfo, "color:#999"];
     logInfo(...caller);
   } else {
-    let log = ["%c [debug]", "font-weight: 600;", ...args];
+    const log = ["%c [debug]", "font-weight: 600;", ...args];
     logInfo(...log);
   }
 };
-let logger = {
+const logger = {
   debug: blank,
   info: blank,
   warn: blank,
@@ -55,7 +55,7 @@ let logger = {
 
 export default logger;
 export function setLogger(opts: any = {}) {
-  let level = opts?.level || "info";
+  const level = opts?.level || "info";
   logger.debug = blank;
   logger.info = blank;
   logger.warn = blank;
