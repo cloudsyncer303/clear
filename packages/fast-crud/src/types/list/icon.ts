@@ -3,7 +3,7 @@
 import { uiContext } from "../../ui";
 
 export default function () {
-  const ui = uiContext.get();
+  let ui = uiContext.get();
   return {
     icon: {
       form: {
