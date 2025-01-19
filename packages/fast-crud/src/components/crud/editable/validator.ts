@@ -3,15 +3,15 @@ import { EditableCell } from "../../../d";
 import { Rules } from "async-validator/dist-types/interface";
 
 export function createValidator(editableCells: Record<string, EditableCell>) {
-  var descriptor: Rules = {};
-  for (var key in editableCells) {
-    var form = editableCells[key].getForm();
-    var rules = form.rules || form.rule;
-    var keys: string[] = key.split(".");
+  const descriptor: Rules = {};
+  for (const key in editableCells) {
+    const form = editableCells[key].getForm();
+    const rules = form.rules || form.rule;
+    const keys: string[] = key.split(".");
     let curDesc: any = descriptor;
     if (rules) {
       for (let i = 0; i < keys.length; i++) {
-        var key = keys[i];
+        const key = keys[i];
         if (!curDesc[key]) {
           curDesc[key] = { type: "object", fields: {} };
         }
@@ -26,7 +26,7 @@ export function createValidator(editableCells: Record<string, EditableCell>) {
   }
   return new Schema(descriptor);
 }
-// var descriptor = {
+// const descriptor = {
 //   name: {
 //     type: "string",
 //     required: true,
@@ -45,7 +45,7 @@ export function createValidator(editableCells: Record<string, EditableCell>) {
 //     }
 //   }
 // };
-// var validator = new Schema(descriptor);
+// const validator = new Schema(descriptor);
 // validator.validate({ name: "muji" }, (errors, fields) => {
 //   if (errors) {
 //     // validation failed, errors is an array of all errors
