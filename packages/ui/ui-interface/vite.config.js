@@ -3,7 +3,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import path from "path";
 import {visualizer} from "rollup-plugin-visualizer";
 import strip from "@rollup/plugin-strip";
-const { resolve } = path;
+let { resolve } = path;
 import DefineOptions from "unplugin-vue-define-options/vite";
 import typescript from "@rollup/plugin-typescript";
 // https://vitejs.dev/config/
