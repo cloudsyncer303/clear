@@ -1,5 +1,5 @@
 export async function loadUploader<T>(type: string): Promise<T> {
-  let module: any = null;
+  const module: any = null;
   if (type === "alioss") {
     module = await import("./uploader-alioss");
   } else if (type === "cos") {
