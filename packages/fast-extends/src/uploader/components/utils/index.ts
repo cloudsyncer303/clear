@@ -11,16 +11,16 @@ export async function buildKey(file: File, fileName: string, config: FsUploaderI
 }
 export function useUploader() {
   function getDefaultType(): string {
-    let config = uploaderConfig;
+    const config = uploaderConfig;
     return config?.defaultType;
   }
   function getConfig(type: string) {
     if (type == null) {
       type = getDefaultType();
     }
-    let defaultConfig = uploaderConfig;
+    const defaultConfig = uploaderConfig;
     // @ts-ignore
-    let config = uploaderConfig[type];
+    const config = uploaderConfig[type];
     if (config.buildKey == null) {
       config.buildKey = defaultConfig.buildKey;
     }
