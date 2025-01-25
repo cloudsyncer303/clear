@@ -1,4 +1,4 @@
-const allCountries: any[][] = [
+let allCountries: any[][] = [
   ["Afghanistan (‫افغانستان‬‎)", "af", "93"],
   ["Albania (Shqipëri)", "al", "355"],
   ["Algeria (‫الجزائر‬‎)", "dz", "213"],
@@ -293,9 +293,9 @@ const allCountries: any[][] = [
   ["Åland Islands", "ax", "358", 1]
 ];
 
-export const countriesIso = allCountries.map((country) => country[1].toUpperCase());
+export let countriesIso = allCountries.map((country) => country[1].toUpperCase());
 
-export const countries = allCountries.map((country) => ({
+export let countries = allCountries.map((country) => ({
   name: country[0],
   iso2: country[1].toUpperCase(),
   dialCode: country[2],
