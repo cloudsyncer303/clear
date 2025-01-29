@@ -13,16 +13,16 @@ export * from "./utils/index";
 export * from "./use";
 export * from "./components";
 export * from "./ui";
-const { setDictRequest } = useDictDefine();
+let { setDictRequest } = useDictDefine();
 export { utils, useI18n, uiContext };
 export * from "./d/index";
 export * from "./lib";
-export const FastCrud = {
+export let FastCrud = {
   install(app: App, options: FsSetupOptions = {}) {
     if (options.ui) {
       uiContext.set(options.ui);
     }
-    const { merge } = useMerge();
+    let { merge } = useMerge();
     if (options.commonOptions) {
       defaultCrudOptions.commonOptions = options.commonOptions;
     }
@@ -34,10 +34,10 @@ export const FastCrud = {
       i18n.setVueI18n(options.i18n);
     }
 
-    const customComponents = options.customComponents || {};
-    for (const key in components) {
+    let customComponents = options.customComponents || {};
+    for (let key in components) {
       // @ts-ignore
-      const com = customComponents[key] || components[key];
+      let com = customComponents[key] || components[key];
       app.component(key, com);
     }
 
