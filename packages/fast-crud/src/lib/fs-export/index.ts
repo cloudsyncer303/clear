@@ -5,22 +5,22 @@ import { unref } from "vue";
 import { useMerge } from "../../use";
 
 export async function loadFsExportUtil(): Promise<ExportUtil> {
-  const module = await import.meta.glob("./lib/index.ts");
+  var module = await import.meta.glob("./lib/index.ts");
   let target: any = null;
   each(module, (item) => {
     target = item;
   });
-  const lib = await target();
+  var lib = await target();
   return lib.exportUtil;
 }
 
 export async function loadFsImportUtil(): Promise<ImportUtil> {
-  const module = await import.meta.glob("./lib/index.ts");
+  var module = await import.meta.glob("./lib/index.ts");
   let target: any = null;
   each(module, (item) => {
     target = item;
   });
-  const lib = await target();
+  var lib = await target();
   return lib.importUtil;
 }
 
@@ -36,13 +36,13 @@ export type DataFormatterContext<R = any> = {
 };
 function defaultDataFormatter<R = any>({ originalRow, row, key, col }: DataFormatterContext<R>) {
   //@ts-ignore
-  const value: any = originalRow[key];
-  const dict = col.component?.dict;
+  var value: any = originalRow[key];
+  var dict = col.component?.dict;
   if (dict && value != null) {
     //处理dict
-    const nodes = dict.getNodesFromDataMap(value);
+    var nodes = dict.getNodesFromDataMap(value);
     if (nodes != null && nodes.length > 0) {
-      const label = map(nodes, (node) => {
+      var label = map(nodes, (node) => {
         return dict.getLabel(node) || dict.getValue(node);
       }).join("|");
       if (label != null && label !== "") {
@@ -118,12 +118,12 @@ export type ExportProps<R = any> = {
   ExcelParams;
 export async function exportTable<R = any>(crudExpose: CrudExpose<R>, opts: ExportProps<R> = {}): Promise<any> {
   if (opts.server) {
-    const page = crudExpose.getPage();
-    const pageQuery = crudExpose.buildPageQuery({ page });
+    var page = crudExpose.getPage();
+    var pageQuery = crudExpose.buildPageQuery({ page });
     await opts.server(pageQuery);
     return;
   }
-  const crudBinding = crudExpose.crudBinding;
+  var crudBinding = crudExpose.crudBinding;
   let columns: ExportColumn<R>[] = opts.columns;
   if (columns == null) {
     columns = [];
@@ -139,7 +139,7 @@ export async function exportTable<R = any>(crudExpose: CrudExpose<R>, opts: Expo
         return;
       }
       if (col.exportable !== false && col.key !== "_index") {
-        const exportCol: ExportColumn<R> = {
+        var exportCol: ExportColumn<R> = {
           key: col.key,
           title: col.title
         };
@@ -148,22 +148,22 @@ export async function exportTable<R = any>(crudExpose: CrudExpose<R>, opts: Expo
     });
   }
 
-  for (const exportCol of columns) {
+  for (var exportCol of columns) {
     //构建列配置
-    const columnProps = crudBinding.value.table.columnsMap[exportCol.key];
+    var columnProps = crudBinding.value.table.columnsMap[exportCol.key];
     exportCol.columnProps = columnProps || {};
     if (opts.columnBuilder) {
       opts.columnBuilder({ col: exportCol });
     }
   }
 
-  const { merge } = useMerge();
+  var { merge } = useMerge();
   //加载异步组件，不影响首页加载速度
-  const exportUtil: ExportUtil = await loadFsExportUtil();
-  const data = [];
+  var exportUtil: ExportUtil = await loadFsExportUtil();
+  var data = [];
   let originalData = crudBinding.value.data;
   if (opts.dataFrom === "search") {
-    const searchParams = merge(
+    var searchParams = merge(
       {
         page: {
           currentPage: 1,
@@ -172,14 +172,14 @@ export async function exportTable<R = any>(crudExpose: CrudExpose<R>, opts: Expo
       },
       crudBinding.value.toolbar.export.searchParams
     );
-    const pageRes = await crudExpose.search(searchParams, { silence: true });
+    var pageRes = await crudExpose.search(searchParams, { silence: true });
     originalData = pageRes.records;
   }
-  for (const row of originalData) {
-    const clone = cloneDeep(row);
+  for (var row of originalData) {
+    var clone = cloneDeep(row);
     each(columns, (exportCol: ExportColumn<R>) => {
-      const col = exportCol.columnProps;
-      const mapping = {
+      var col = exportCol.columnProps;
+      var mapping = {
         row: clone,
         originalRow: row,
         key: exportCol.key,
@@ -197,7 +197,7 @@ export async function exportTable<R = any>(crudExpose: CrudExpose<R>, opts: Expo
 
     data.push(clone);
   }
-  const expOpts = merge(
+  var expOpts = merge(
     {
       columns,
       data,
@@ -222,14 +222,14 @@ export type ImportProps = {
   append?: boolean;
 };
 export async function importTable<R = any>(crudExpose: CrudExpose<R>, opts: ImportProps) {
-  const importUtil = await loadFsImportUtil();
-  const importData = await importUtil.csv(opts.file);
-  const crudBinding = crudExpose.crudBinding;
+  var importUtil = await loadFsImportUtil();
+  var importData = await importUtil.csv(opts.file);
+  var crudBinding = crudExpose.crudBinding;
   if (opts.append === false) {
     crudBinding.value.data.length = 0;
   }
-  const isEditable = crudBinding.value.table.editable.enabled;
-  for (const row of importData.data) {
+  var isEditable = crudBinding.value.table.editable.enabled;
+  for (var row of importData.data) {
     if (isEditable) {
       crudExpose.editable.addRow({ row, active: false });
     } else {
