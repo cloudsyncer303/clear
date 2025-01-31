@@ -1,3 +1,3 @@
 import axios from "axios";
 
-export let axiosInstance = axios.create({});
+export const axiosInstance = axios.create({});
