@@ -1,7 +1,7 @@
 import { FsUploaderAliossSTS, FsUploaderGetAuthContext, FsUploaderOptions } from "../d/type";
 import { cloneDeep } from "lodash-es";
 
-export var defaultConfig: FsUploaderOptions = {
+export const defaultConfig: FsUploaderOptions = {
   defaultType: "cos", // 默认的上传后端类型
   cos: {
     // 腾讯云 cos 的配置
@@ -67,11 +67,11 @@ export var defaultConfig: FsUploaderOptions = {
     // }
   },
   async buildKey(context) {
-    var { fileName } = context;
+    const { fileName } = context;
     // 文件key的构建规则
-    var date = new Date();
-    var fileType = context.fileType ?? "file";
-    var keepName = context.keepName ?? false;
+    const date = new Date();
+    const fileType = context.fileType ?? "file";
+    const keepName = context.keepName ?? false;
     let ext = "";
     if (keepName) {
       ext = "/" + fileName;
@@ -96,4 +96,4 @@ export var defaultConfig: FsUploaderOptions = {
   }
 };
 
-export var uploaderConfig: FsUploaderOptions = cloneDeep(defaultConfig);
+export const uploaderConfig: FsUploaderOptions = cloneDeep(defaultConfig);
