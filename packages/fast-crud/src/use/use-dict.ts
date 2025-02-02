@@ -4,7 +4,7 @@ import { uiContext } from "../ui";
 import { utils } from "../utils";
 import { Dict } from "../use/use-dict-define";
 export function useDict(props: any, ctx: any, vModel = "modelValue") {
-  var ui = uiContext.get();
+  const ui = uiContext.get();
   let dict: Dict = props.dict;
   if (dict) {
     if (dict.prototype) {
@@ -30,8 +30,8 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
       }
 
       if (ui.type === "naive") {
-        var newOptions: any = [];
-        for (var option of options) {
+        const newOptions: any = [];
+        for (const option of options) {
           newOptions.push({
             ...option,
             value: getValue(option),
@@ -49,10 +49,10 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
     return dict;
   }
 
-  var getScope: Function = inject("get:scope", function () {});
+  const getScope: Function = inject("get:scope", function () {});
 
   function getCurrentScope() {
-    var value = props[vModel] || ctx.attrs[vModel];
+    const value = props[vModel] || ctx.attrs[vModel];
     return {
       ...getScope(),
       componentRef: proxy,
@@ -60,14 +60,14 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
     };
   }
   // @ts-ignore
-  var { proxy } = getCurrentInstance();
-  var loadDict = async (reload = false) => {
+  const { proxy } = getCurrentInstance();
+  const loadDict = async (reload = false) => {
     if (!dict) {
       return;
     }
 
     if (dict.getNodesByValues) {
-      var scope = getCurrentScope();
+      const scope = getCurrentScope();
       if (scope.value == null) {
         return;
       }
@@ -83,7 +83,7 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
       return;
     }
 
-    var scope = getCurrentScope();
+    const scope = getCurrentScope();
     if (reload) {
       await dict.reloadDict(scope);
       return;
@@ -92,17 +92,17 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
   };
   loadDict();
 
-  var reloadDict = async () => {
+  const reloadDict = async () => {
     await loadDict(true);
   };
-  var clearDict = () => {
+  const clearDict = () => {
     if (!dict) {
       return;
     }
     dict.clear();
   };
 
-  var watchValue = () => {
+  const watchValue = () => {
     if (dict == null) {
       return;
     }
@@ -121,13 +121,13 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
     );
   };
 
-  var watchDictData = () => {
+  const watchDictData = () => {
     watch(
       () => {
         return dict?.data;
       },
       () => {
-        var scope = getCurrentScope();
+        const scope = getCurrentScope();
         if (ctx.attrs.onDictChange) {
           // ctx.attrs.onDictChange({ dict, ...scope });
         }
@@ -140,42 +140,42 @@ export function useDict(props: any, ctx: any, vModel = "modelValue") {
   };
   watchDictData();
 
-  var getDictData = () => {
+  const getDictData = () => {
     return getDict()?.data;
   };
 
-  var getPropValue = (item: any, prop: any) => {
+  const getPropValue = (item: any, prop: any) => {
     let attr = prop;
     if (getDict()) {
       attr = getDict()[prop];
     }
     return item[attr];
   };
-  var removePropValue = (item: any, prop: any) => {
+  const removePropValue = (item: any, prop: any) => {
     let attr = prop;
     if (getDict()) {
       attr = getDict()[prop];
     }
     delete item[attr];
   };
-  var getValue = (item: any) => {
+  const getValue = (item: any) => {
     return getPropValue(item, "value");
   };
 
-  var getChildren = (item: any) => {
+  const getChildren = (item: any) => {
     return getPropValue(item, "children");
   };
-  var getLabel = (item: any) => {
+  const getLabel = (item: any) => {
     if (props.labelFormatter) {
       return props.labelFormatter(item);
     }
-    var label = getPropValue(item, "label");
+    const label = getPropValue(item, "label");
     if (label == null) {
       return "";
     }
     return String(label);
   };
-  var getColor = (item: any) => {
+  const getColor = (item: any) => {
     return getPropValue(item, "color");
   };
 
