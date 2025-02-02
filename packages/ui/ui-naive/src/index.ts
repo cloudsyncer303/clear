@@ -14,14 +14,14 @@ export type UiSetupOptions = {
 };
 
 function set() {
-  const naiveUi = new Naive();
+  let naiveUi = new Naive();
   uiContext.set(naiveUi);
   return naiveUi;
 }
 export default {
   install(app: any, options: UiSetupOptions = {}) {
     // @ts-ignore
-    const naiveUi = set();
+    let naiveUi = set();
     app.component("FsUiContext", FsUiContext);
     if (options.setupIcons !== false) {
       setupIcons(app);
