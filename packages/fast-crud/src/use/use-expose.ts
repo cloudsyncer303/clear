@@ -25,8 +25,8 @@ import { useFormWrapper } from "./use-form";
 import { forEachColumns } from "../use/use-columns";
 import { Editable, EditableActiveColsOptions, EditableAddRowOptions } from "../d/expose-editable";
 
-var { merge } = useMerge();
-var doMerge = merge;
+const { merge } = useMerge();
+const doMerge = merge;
 export type UseExposeProps<R = any> = {
   crudRef: Ref;
   crudBinding: Ref<CrudBinding<R>>;
@@ -46,11 +46,11 @@ export type EditableOnEnabledProps = {
 };
 
 function useEditable<R = any>(props: UseEditableProps<R>) {
-  var { crudExpose } = props;
-  var { crudBinding } = crudExpose;
-  var { ui } = useUi();
-  var { t } = useI18n();
-  var { merge } = useMerge();
+  const { crudExpose } = props;
+  const { crudBinding } = crudExpose;
+  const { ui } = useUi();
+  const { t } = useI18n();
+  const { merge } = useMerge();
 
   watch(
     () => {
@@ -68,13 +68,13 @@ function useEditable<R = any>(props: UseEditableProps<R>) {
       }
     }
   );
-  var editable: Editable<R> = {
+  const editable: Editable<R> = {
     /**
      * 启用编辑
      * @param opts
      */
     async enable(opts?: any, onEnabled?: (opts: EditableOnEnabledProps) => void) {
-      var editableOpts = crudBinding.value.table.editable;
+      const editableOpts = crudBinding.value.table.editable;
       merge(editableOpts, { enabled: true }, opts);
       if (onEnabled) {
         onEnabled({ editable: editableOpts });
@@ -139,21 +139,21 @@ function useEditable<R = any>(props: UseEditableProps<R>) {
     async doSaveRow(opts: { editableId: any; row: any }) {
       let editableId = opts.editableId;
       if (!editableId) {
-        var row = opts.row;
+        const row = opts.row;
         editableId = row[crudBinding.value.table.editable.rowKey];
       }
-      var editableRow = editable.getEditableRow(editableId);
+      const editableRow = editable.getEditableRow(editableId);
       await editableRow.save({
         async doSave(opts: EditableSaveRowContext<R>) {
-          var { isAdd, row, setData } = opts;
-          var rowData = row;
+          const { isAdd, row, setData } = opts;
+          const rowData = row;
           if (crudBinding.value?.mode?.name === "local") {
             return;
           }
           try {
             editableRow.loading = true;
             if (isAdd) {
-              var ret = await crudBinding.value.request.addRequest({ form: rowData });
+              const ret = await crudBinding.value.request.addRequest({ form: rowData });
               setData(ret);
             } else {
               await crudBinding.value.request.editRequest({ form: rowData, row: rowData });
@@ -167,12 +167,12 @@ function useEditable<R = any>(props: UseEditableProps<R>) {
     async doCancelRow(opts: { editableId: any; row: R }) {
       let editableId = opts.editableId;
       if (!editableId) {
-        var row = opts.row;
+        const row = opts.row;
         //@ts-ignore
         editableId = row[crudBinding.value.table.editable.rowKey];
       }
 
-      var editableRow = editable.getEditableRow(editableId);
+      const editableRow = editable.getEditableRow(editableId);
       if (editableRow.isAdd) {
         editable.removeRow(editableId);
         return;
@@ -182,12 +182,12 @@ function useEditable<R = any>(props: UseEditableProps<R>) {
     async doRemoveRow(opts: { editableId: any; row: R }) {
       let editableId = opts.editableId;
       if (!editableId) {
-        var row = opts.row;
+        const row = opts.row;
         //@ts-ignore
         editableId = row[crudBinding.value.table.editable.rowKey];
       }
 
-      var editableRow = editable.getEditableRow(editableId);
+      const editableRow = editable.getEditableRow(editableId);
       return await crudExpose.doRemove(opts, {
         async handle() {
           if (editableRow.isAdd) {
@@ -231,11 +231,11 @@ function useEditable<R = any>(props: UseEditableProps<R>) {
  * @param props
  */
 export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
-  var { crudRef, crudBinding } = props;
-  var { ui } = useUi();
-  var { t } = useI18n();
+  const { crudRef, crudBinding } = props;
+  const { ui } = useUi();
+  const { t } = useI18n();
 
-  var formWrapperProvider = useFormWrapper();
+  const formWrapperProvider = useFormWrapper();
   function checkCrudRef() {
     if (crudRef.value == null) {
       logger.warn("crudRef还未初始化，请在onMounted之后调用");
@@ -247,7 +247,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
     }
   }
 
-  var crudExpose: CrudExpose<R> = {
+  const crudExpose: CrudExpose<R> = {
     crudRef,
     crudBinding,
 
@@ -255,7 +255,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       return crudRef.value.formWrapperRef;
     },
     getFormRef: () => {
-      var formWrapperRef = crudExpose.getFormWrapperRef();
+      const formWrapperRef = crudExpose.getFormWrapperRef();
       if (formWrapperRef == null || formWrapperRef?.formRef == null) {
         logger.error(
           "当前无法获取FormRef，请在编辑对话框已打开的状态下调用此方法，如果是在打开对话框时调用，可以尝试先nextTick"
@@ -265,14 +265,14 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       return formWrapperRef?.formRef;
     },
     getFormData: () => {
-      var formRef = crudExpose.getFormRef();
+      const formRef = crudExpose.getFormRef();
       return formRef?.getFormData();
     },
     setFormData: (form: any, options?: SetFormDataOptions) => {
       crudExpose.getFormRef()?.setFormData(form, options);
     },
     getFormComponentRef(key, isAsync = false) {
-      var formRef = crudExpose.getFormRef();
+      const formRef = crudExpose.getFormRef();
       return formRef?.getComponentRef(key, isAsync);
     },
     doValueBuilder(records, columns) {
@@ -280,7 +280,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         columns = toRaw(crudBinding.value.columns);
       }
       logger.debug("doValueBuilder ,columns=", columns);
-      var valueBuilderColumns: ColumnCompositionProps<R>[] = [];
+      const valueBuilderColumns: ColumnCompositionProps<R>[] = [];
       forEachColumns(columns, (column) => {
         if (column.valueBuilder != null) {
           valueBuilderColumns.push(column);
@@ -314,7 +314,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       if (columns == null) {
         columns = toRaw(crudBinding.value.columns);
       }
-      var valueBuilderColumns: ColumnCompositionProps<R>[] = [];
+      const valueBuilderColumns: ColumnCompositionProps<R>[] = [];
       forEachColumns(columns, (column) => {
         if (column.valueResolve != null) {
           valueBuilderColumns.push(column);
@@ -325,7 +325,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       }
       logger.debug("doValueResolve ,columns=", columns);
       forEach(valueBuilderColumns, (col) => {
-        var key = col.key;
+        const key = col.key;
         col.valueResolve({
           value: form[key],
           row: form,
@@ -357,11 +357,11 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       }
 
       if (context.mergeForm === false) {
-        for (var key in crudBinding.value.search.validatedForm) {
+        for (const key in crudBinding.value.search.validatedForm) {
           delete crudBinding.value.search.validatedForm[key];
         }
       }
-      var { merge } = useMerge();
+      const { merge } = useMerge();
       merge(crudBinding.value.search.validatedForm, context.form);
       if (context.triggerSearch) {
         crudExpose.doRefresh();
@@ -376,7 +376,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
     },
 
     buildPageQuery(pageQuery: PageQuery<R>): UserPageQuery<R> {
-      var page = pageQuery.page;
+      const page = pageQuery.page;
 
       let searchFormData = pageQuery.form;
       if (searchFormData == null) {
@@ -392,7 +392,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         sort = crudBinding.value.table.sort || {};
       }
 
-      var query: PageQuery<R> = { page, form: searchFormData, sort };
+      const query: PageQuery<R> = { page, form: searchFormData, sort };
       let userPageQuery: UserPageQuery<R> = query;
       if (crudBinding.value.request.transformQuery) {
         userPageQuery = crudBinding.value.request.transformQuery(query);
@@ -401,9 +401,9 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
     },
 
     async search(pageQuery: PageQuery<R>, options: SearchOptions = {}) {
-      var userPageQuery = crudExpose.buildPageQuery(pageQuery);
+      const userPageQuery = crudExpose.buildPageQuery(pageQuery);
       let userPageRes: UserPageRes<R>;
-      var disableLoading = unref(crudBinding.value.table.disableLoading);
+      const disableLoading = unref(crudBinding.value.table.disableLoading);
       try {
         if (options.silence !== true && disableLoading !== true) {
           crudBinding.value.table.loading = true;
@@ -456,8 +456,8 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         }
       }
 
-      var page = crudExpose.getPage();
-      var pageRes = await crudExpose.search({ page }, { silence: props?.silence });
+      const page = crudExpose.getPage();
+      const pageRes = await crudExpose.search({ page }, { silence: props?.silence });
       if (pageRes == null) {
         logger.error(
           "pageRequest返回结构不正确，请配置正确的request.transformRes，期望：{currentPage>0, pageSize>0, total, records:[]},实际返回：",
@@ -465,8 +465,8 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         );
         return;
       }
-      var { currentPage = page.currentPage || 1, pageSize = page.pageSize, total } = pageRes;
-      var { records } = pageRes;
+      const { currentPage = page.currentPage || 1, pageSize = page.pageSize, total } = pageRes;
+      const { records } = pageRes;
       if (
         records == null ||
         !(records instanceof Array) ||
@@ -494,7 +494,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         crudBinding.value.pagination[ui.pagination.total] = total || records.length;
       }
       if (props?.scrollTop ?? crudBinding.value.table.scrollTopOnRefreshed) {
-        var fsTableRef = crudExpose.getTableRef();
+        const fsTableRef = crudExpose.getTableRef();
         fsTableRef?.scrollTo(0);
       }
       if (crudBinding.value?.table?.onRefreshed) {
@@ -572,7 +572,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
      * 获取x-Table实例
      */
     getBaseTableRef() {
-      var tableRef = this.getTableRef();
+      const tableRef = this.getTableRef();
       if (tableRef == null) {
         logger.warn("fs-table还未挂载");
         return;
@@ -611,7 +611,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         data = crudBinding.value.data;
       }
       for (let i = 0; i < data.length; i++) {
-        var row = data[i];
+        const row = data[i];
         if (row[crudBinding.value.table.rowKey] === rowKey) {
           data.splice(i, 1);
           return true;
@@ -624,7 +624,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       }
     },
     getTableDataRow(index: number) {
-      var data = crudExpose.getTableData();
+      const data = crudExpose.getTableData();
       if (data == null) {
         throw new Error("table data is not init");
       }
@@ -639,7 +639,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
      * @param row
      */
     doSelectCurrentRow({ row }: { row: any }) {
-      var tableRef = crudExpose.getTableRef();
+      const tableRef = crudExpose.getTableRef();
       tableRef.value.setCurrentRow(row);
     },
     /**
@@ -648,7 +648,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
      * @param opts
      */
     async doRemove(context: DoRemoveContext<R>, opts?: RemoveProps<R>) {
-      var removeBinding: any = crudBinding.value.table.remove ?? opts ?? {};
+      const removeBinding: any = crudBinding.value.table.remove ?? opts ?? {};
       if (opts?.noConfirm !== true) {
         try {
           if (removeBinding.confirmFn) {
@@ -670,7 +670,7 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       }
 
       let res = null;
-      var isLocal = crudBinding.value.mode?.name === "local";
+      const isLocal = crudBinding.value.mode?.name === "local";
       if (opts?.handle) {
         res = await opts.handle(context);
       } else {
@@ -683,9 +683,9 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       if (res === false) {
         return;
       }
-      var removeScope = { ...context, res };
+      const removeScope = { ...context, res };
       if (removeBinding.afterRemove) {
-        var success = await removeBinding.afterRemove(removeScope);
+        const success = await removeBinding.afterRemove(removeScope);
         if (success === false) {
           return false;
         }
@@ -715,12 +715,12 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
         //通过新实例打开
         return await formWrapperProvider.openDialog(formOpts);
       }
-      var formWrapperRef = this.getFormWrapperRef();
+      const formWrapperRef = this.getFormWrapperRef();
       formWrapperRef.open(formOpts);
       return formWrapperRef;
     },
     async _openDialog(mode: string, context: OpenEditContext, formOpts: OpenDialogProps) {
-      var { merge } = useMerge();
+      const { merge } = useMerge();
       // @ts-ignore
       let row = context.row || context[ui.tableColumn.row];
       delete context.row;
@@ -730,10 +730,10 @@ export function useExpose<R = any>(props: UseExposeProps<R>): UseExposeRet<R> {
       if (crudBinding.value?.request?.infoRequest) {
         row = await crudBinding.value.request.infoRequest({ mode, row });
       }
-      var options = {
+      const options = {
         mode
       };
-      var xxForm = toRaw(crudBinding.value[mode + "Form"]);
+      const xxForm = toRaw(crudBinding.value[mode + "Form"]);
       merge(options, xxForm, { initialForm: row }, context, formOpts);
       return await this.openDialog(options);
     },
