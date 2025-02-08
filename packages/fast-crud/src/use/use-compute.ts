@@ -4,7 +4,7 @@ import { useMerge } from "./use-merge";
 import { AsyncComputeRef, ComputeFn, ComputeRef, ScopeContext } from "../d";
 import { deepdash } from "../utils/deepdash";
 
-const { cloneDeep } = useMerge();
+var { cloneDeep } = useMerge();
 
 function isAsyncCompute(value: any) {
   return value instanceof AsyncComputeValue;
@@ -13,11 +13,11 @@ function isSyncCompute(value: any) {
   return value instanceof ComputeValue;
 }
 function findComputeValues(target: any, excludes: any[], isAsync: boolean) {
-  const foundMap: any = {};
+  var foundMap: any = {};
   if (target == null) {
     return foundMap;
   }
-  const checkFunc = isAsync ? isAsyncCompute : isSyncCompute;
+  var checkFunc = isAsync ? isAsyncCompute : isSyncCompute;
   deepdash.forEachDeep(
     target,
     (value: any, key: any, parent: any, context: any) => {
@@ -26,9 +26,9 @@ function findComputeValues(target: any, excludes: any[], isAsync: boolean) {
       }
       if (checkFunc(value)) {
         // @ts-ignore
-        const path: string = context.path;
+        var path: string = context.path;
         if (excludes) {
-          for (const exclude of excludes) {
+          for (var exclude of excludes) {
             if (typeof exclude === "string") {
               if (path.startsWith(exclude)) {
                 return false;
@@ -62,7 +62,7 @@ function doAsyncCompute(dependAsyncValues: any, getContextFn: () => any) {
   if (dependAsyncValues == null || Object.keys(dependAsyncValues).length <= 0) {
     return null;
   }
-  const asyncValueMap: any = {};
+  var asyncValueMap: any = {};
   forEach(dependAsyncValues, (item, key) => {
     asyncValueMap[key] = item.buildAsyncRef(getContextFn);
   });
@@ -84,27 +84,27 @@ function doComputed(
   excludes?: any[],
   userComputedFn?: (target: any) => any
 ) {
-  const dependValues = computed(() => {
-    const target = getTargetFunc();
+  var dependValues = computed(() => {
+    var target = getTargetFunc();
     return findComputeValues(target, excludes, false);
   });
 
-  const dependAsyncValues = computed(() => {
-    const target = getTargetFunc();
+  var dependAsyncValues = computed(() => {
+    var target = getTargetFunc();
     return findComputeValues(target, excludes, true);
   });
   //TODO computed之后，运行会死循环， 里面会不断创建watch
-  const asyncValuesMap = doAsyncCompute(dependAsyncValues.value, getContextFn);
+  var asyncValuesMap = doAsyncCompute(dependAsyncValues.value, getContextFn);
 
   return computed(() => {
     let target = getTargetFunc();
-    const asyncCount = Object.keys(dependAsyncValues.value).length;
-    const syncCount = Object.keys(dependValues.value).length;
+    var asyncCount = Object.keys(dependAsyncValues.value).length;
+    var syncCount = Object.keys(dependValues.value).length;
 
     if (asyncCount > 0 || syncCount > 0) {
       target = cloneDeep(target);
       if (syncCount > 0) {
-        const context = getContextFn ? getContextFn() : {};
+        var context = getContextFn ? getContextFn() : {};
         forEach(dependValues.value, (value, key) => {
           set(target, key, value.computeFn(context));
         });
@@ -139,7 +139,7 @@ export class AsyncComputeValue<RV, R = any, WV = any> implements AsyncComputeRef
   asyncFn: (value: WV, getContextFn: GetContextFn) => Promise<RV>;
   defaultValue?: any;
   constructor(options: AsyncComputeRef<RV, R>) {
-    const { asyncFn, defaultValue } = options;
+    var { asyncFn, defaultValue } = options;
     this.watch = options.watch;
     this.asyncFn = asyncFn;
     this.defaultValue = defaultValue;
@@ -147,8 +147,8 @@ export class AsyncComputeValue<RV, R = any, WV = any> implements AsyncComputeRef
 
   buildAsyncRef(getContextFn: GetContextFn) {
     getContextFn = getContextFn || function () {};
-    const asyncRef: Ref<RV> = ref(this.defaultValue);
-    const computedValue = computed<WV>(() => {
+    var asyncRef: Ref<RV> = ref(this.defaultValue);
+    var computedValue = computed<WV>(() => {
       if (this.watch) {
         return this.watch(getContextFn());
       }
