@@ -2,7 +2,7 @@ function isEmpty(value?: string | null) {
   return value == null || value === "";
 }
 function isAllEmpty(...values: any) {
-  for (const value of values) {
+  for (let value of values) {
     if (value == null || value === "") {
     } else {
       return false;
@@ -11,14 +11,14 @@ function isAllEmpty(...values: any) {
   return false;
 }
 function hasEmpty(...values: any) {
-  for (const value of values) {
+  for (let value of values) {
     if (value == null || value === "") {
       return true;
     }
   }
   return false;
 }
-const StringUtils = {
+let StringUtils = {
   isEmpty,
   isAllEmpty,
   hasEmpty
