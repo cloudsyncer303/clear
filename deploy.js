@@ -1,6 +1,6 @@
-let http = require("axios")
-let exec = require('child_process').exec;
-let fs = require("fs")
+const http = require("axios")
+const exec = require('child_process').exec;
+const fs = require("fs")
 
 // 同步npmmirror的包
 async function getPackages(directoryPath) {
@@ -14,7 +14,7 @@ async function getPackages(directoryPath) {
             }
 
             // 过滤仅保留目录
-            let directories = files
+            const directories = files
                 .filter(file => file.isDirectory())
                 .map(directory => directory.name);
 
@@ -26,15 +26,15 @@ async function getPackages(directoryPath) {
 }
 
 async function getAllPackages(){
-    let base = ["fast-crud",'fast-extends']
-    let ui =await getPackages("./packages/ui")
+    const base = ["fast-crud",'fast-extends']
+    const ui =await getPackages("./packages/ui")
 
     return ui.concat(base)
 }
 
 async function sync(){
-    let packages = await getAllPackages()
-    for(let pkg of packages){
+    const packages = await getAllPackages()
+    for(const pkg of packages){
         await http({
             url: `http://registry-direct.npmmirror.com/@fast-crud/${pkg}/sync?sync_upstream=true`,
             method: 'PUT',
@@ -81,13 +81,13 @@ async function build(){
 
 // trigger
 
-let naive = "http://flow-openapi.aliyun.com/pipeline/webhook/Zm3TJyDtyFZgV4dtJiD1"
-let doc = "http://flow-openapi.aliyun.com/pipeline/webhook/soOYdQ5sF3kLjTPJGmIO"
-let antdv = "http://flow-openapi.aliyun.com/pipeline/webhook/HiL0uVYxfUnBzIMJZVXB"
-let antdv4 = "http://flow-openapi.aliyun.com/pipeline/webhook/U6zdIwkJ56xWZvctCOkE"
-let element = "http://flow-openapi.aliyun.com/pipeline/webhook/uFTI0XJ9RgqnofX7jpRD"
+const naive = "http://flow-openapi.aliyun.com/pipeline/webhook/Zm3TJyDtyFZgV4dtJiD1"
+const doc = "http://flow-openapi.aliyun.com/pipeline/webhook/soOYdQ5sF3kLjTPJGmIO"
+const antdv = "http://flow-openapi.aliyun.com/pipeline/webhook/HiL0uVYxfUnBzIMJZVXB"
+const antdv4 = "http://flow-openapi.aliyun.com/pipeline/webhook/U6zdIwkJ56xWZvctCOkE"
+const element = "http://flow-openapi.aliyun.com/pipeline/webhook/uFTI0XJ9RgqnofX7jpRD"
 
-let webhooks = [doc,naive,antdv,antdv4,element]
+const webhooks = [doc,naive,antdv,antdv4,element]
 
 async function sleep(time){
     return new Promise(resolve => {
@@ -96,7 +96,7 @@ async function sleep(time){
 }
 
 async function trigger(){
-    for (let webhook of webhooks) {
+    for (const webhook of webhooks) {
         await http({
             url:webhook,
             method:'POST',
