@@ -27,4 +27,4 @@ export type ColumnsFilterContext = {
   reset: () => void;
 };
 
-export let ColumnsFilterProvideKey = "ColumnsFilterContext";
+export const ColumnsFilterProvideKey = "ColumnsFilterContext";
