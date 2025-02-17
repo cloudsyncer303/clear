@@ -5,7 +5,7 @@ export type FsEditorConfig = {
   wangEditor5?: FsEditorWang5Config;
 };
 export type FsEditorWang5Config = { editorConfig: IEditorConfig; toolbarConfig: IToolbarConfig };
-export const defaultConfig = {
+export let defaultConfig = {
   wangEditor: {},
   wangEditor5: {
     editorConfig: {},
