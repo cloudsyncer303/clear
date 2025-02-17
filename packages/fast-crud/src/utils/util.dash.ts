@@ -7,9 +7,9 @@ export default {
    * @param skips
    */
   omit(ref: Ref, ...skips: string[]): any {
-    let keys = Object.keys(ref.value);
-    let pAttrs: any = {};
-    for (let key of keys) {
+    const keys = Object.keys(ref.value);
+    const pAttrs: any = {};
+    for (const key of keys) {
       if (key === "loading") {
         continue;
       }
