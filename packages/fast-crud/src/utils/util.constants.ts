@@ -1,3 +1,3 @@
-export let Constants = {
+export const Constants = {
   orderDefault: 1
 };
