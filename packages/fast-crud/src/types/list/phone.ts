@@ -8,7 +8,7 @@ export default function () {
       },
       column: {
         formatter(row: any, column: any, value: any) {
-          const ret = "";
+          let ret = "";
           if (value != null) {
             if (value.callingCode != null) {
               ret += "(+" + value.callingCode + ")";
