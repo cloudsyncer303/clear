@@ -1,11 +1,11 @@
 import { h } from "vue";
 import Cropper from "cropperjs";
 
-let previewPropType = typeof window === "undefined" ? [String, Array] : [String, Array, Element, NodeList];
+const previewPropType = typeof window === "undefined" ? [String, Array] : [String, Array, Element, NodeList];
 
 export default {
   render() {
-    let crossorigin = this.crossorigin || undefined;
+    const crossorigin = this.crossorigin || undefined;
 
     return h("div", { style: this.containerStyle }, [
       h("img", {
@@ -133,10 +133,10 @@ export default {
     zoom: Function
   },
   mounted() {
-    let { containerStyle, src, alt, imgStyle, ...data } = this.$options.props;
-    let props = {};
+    const { containerStyle, src, alt, imgStyle, ...data } = this.$options.props;
+    const props = {};
 
-    for (let key in data) {
+    for (const key in data) {
       if (this[key] !== undefined) {
         props[key] = this[key];
       }
