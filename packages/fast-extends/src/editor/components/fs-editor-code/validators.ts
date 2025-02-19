@@ -1,6 +1,6 @@
 import { importJsYaml } from "./async-import";
 
-const jsonRule = {
+let jsonRule = {
   validator: async (rule: any, value: any) => {
     //校验value json的有效性
     if (value) {
@@ -15,12 +15,12 @@ const jsonRule = {
   message: "json格式错误"
 };
 
-const yamlRule = {
+let yamlRule = {
   validator: async (rule: any, value: any) => {
     //校验value yaml的有效性
     if (value) {
       try {
-        const yaml = await importJsYaml();
+        let yaml = await importJsYaml();
         yaml.load(value, { schema: yaml.JSON_SCHEMA });
       } catch (e: any) {
         console.error(e);
@@ -31,7 +31,7 @@ const yamlRule = {
   message: "yaml格式错误"
 };
 
-export const FsEditorCodeValidators = {
+export let FsEditorCodeValidators = {
   jsonRule,
   yamlRule
 };
