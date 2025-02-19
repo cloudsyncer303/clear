@@ -1,7 +1,7 @@
 import { useUi } from "@fast-crud/ui-interface";
 
 export default function () {
-  const { ui } = useUi();
+  let { ui } = useUi();
   return {
     number: {
       form: { component: { name: ui.number.name, props: {} } },
