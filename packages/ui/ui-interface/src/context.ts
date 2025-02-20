@@ -17,7 +17,7 @@ export class UiContext {
     return this.ref.value;
   }
 }
-export let uiContext = new UiContext();
+export const uiContext = new UiContext();
 export default function () {
   return uiContext.get();
 }
