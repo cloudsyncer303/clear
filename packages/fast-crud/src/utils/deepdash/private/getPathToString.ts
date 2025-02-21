@@ -1,6 +1,6 @@
-let rxArrIndex = /\D/;
-let rxVarName = /^[a-zA-Z_$]+([\w_$]*)$/;
-let rxQuot = /"/g;
+const rxArrIndex = /\D/;
+const rxVarName = /^[a-zA-Z_$]+([\w_$]*)$/;
+const rxQuot = /"/g;
 
 function joinPaths(...paths: any) {
   return paths.reduce((acc: any, p: any) => (acc ? (!p || p.startsWith("[") ? `${acc}${p}` : `${acc}.${p}`) : p), "");
@@ -13,7 +13,7 @@ export default function getPathToString(_: any) {
     if (!Array.isArray(path)) return undefined;
     prefixes = joinPaths(...prefixes);
     return path.reduce((acc, value) => {
-      let type = typeof value;
+      const type = typeof value;
       if (type === "number") {
         if (value < 0 || value % 1 !== 0) {
           return `${acc}["${value}"]`;
