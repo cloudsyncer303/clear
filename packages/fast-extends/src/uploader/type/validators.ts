@@ -1,7 +1,7 @@
 import { compute, RuleRecord } from "@fast-crud/fast-crud";
-export let createAllUploadSuccessValidator = (getFormComponentRef: (key: string, isAsync: boolean) => any) => {
+export const createAllUploadSuccessValidator = (getFormComponentRef: (key: string, isAsync: boolean) => any) => {
   return async (rule: any, value: any) => {
-    let ref = await getFormComponentRef(rule.fullField, true);
+    const ref = await getFormComponentRef(rule.fullField, true);
     if (ref && ref.hasUploading()) {
       throw new Error("还有未上传完成的文件");
     }
@@ -9,7 +9,7 @@ export let createAllUploadSuccessValidator = (getFormComponentRef: (key: string,
   };
 };
 
-export let AllUploadSuccessValidator = () => {
+export const AllUploadSuccessValidator = () => {
   return compute(({ getComponentRef }) => {
     return createAllUploadSuccessValidator(getComponentRef);
   });
@@ -20,7 +20,7 @@ export let AllUploadSuccessValidator = () => {
  * @param yourRules
  * @param uploadingWarningMessage
  */
-export let createUploaderRules = (yourRules?: RuleRecord[], uploadingWarningMessage?: string): RuleRecord[] => {
+export const createUploaderRules = (yourRules?: RuleRecord[], uploadingWarningMessage?: string): RuleRecord[] => {
   if (yourRules == null) {
     yourRules = [];
   }
