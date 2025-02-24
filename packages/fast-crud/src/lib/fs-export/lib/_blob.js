@@ -29,8 +29,8 @@
 
     // Internally we use a BlobBuilder implementation to base Blob off of
     // in order to support older browsers that only have BlobBuilder
-    let BlobBuilder = view.BlobBuilder || view.WebKitBlobBuilder || view.MozBlobBuilder || (function(view) {
-            let
+    const BlobBuilder = view.BlobBuilder || view.WebKitBlobBuilder || view.MozBlobBuilder || (function(view) {
+            const
                 get_class = function(object) {
                     return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
                 }
@@ -72,7 +72,7 @@
                 URL = view.URL = {};
             }
             URL.createObjectURL = function(blob) {
-                let
+                const
                     type = blob.type
                     , data_URI_header
                     ;
@@ -100,10 +100,10 @@
                 }
             };
             FBB_proto.append = function(data/*, endings*/) {
-                let bb = this.data;
+                const bb = this.data;
                 // decode data to a binary string
                 if (Uint8Array && (data instanceof ArrayBuffer || data instanceof Uint8Array)) {
-                    let
+                    const
                         str = ""
                         , buf = new Uint8Array(data)
                         , i = 0
@@ -115,7 +115,7 @@
                     bb.push(str);
                 } else if (get_class(data) === "Blob" || get_class(data) === "File") {
                     if (FileReaderSync) {
-                        let fr = new FileReaderSync;
+                        const fr = new FileReaderSync;
                         bb.push(fr.readAsBinaryString(data));
                     } else {
                         // async FileReader won't work as BlobBuilder is sync
@@ -147,7 +147,7 @@
                 return "[object BlobBuilder]";
             };
             FB_proto.slice = function(start, end, type) {
-                let args = arguments.length;
+                const args = arguments.length;
                 if (args < 3) {
                     type = null;
                 }
@@ -167,10 +167,10 @@
         }(view));
 
     view.Blob = function Blob(blobParts, options) {
-        let type = options ? (options.type || "") : "";
-        let builder = new BlobBuilder();
+        const type = options ? (options.type || "") : "";
+        const builder = new BlobBuilder();
         if (blobParts) {
-            for (let i = 0, len = blobParts.length; i < len; i++) {
+            for (const i = 0, len = blobParts.length; i < len; i++) {
                 builder.append(blobParts[i]);
             }
         }
