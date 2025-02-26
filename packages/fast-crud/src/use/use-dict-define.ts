@@ -4,7 +4,7 @@ import logger from "../utils/util.log";
 import { isShallow, nextTick, shallowReactive, UnwrapNestedRefs } from "vue";
 import { LRUCache } from "lru-cache";
 import { merge } from "lodash-es";
-var DictGlobalCache = new LRUCache<string, any>({
+const DictGlobalCache = new LRUCache<string, any>({
   max: 500,
   maxSize: 5000,
   ttl: 1000 * 60 * 30,
@@ -15,7 +15,7 @@ var DictGlobalCache = new LRUCache<string, any>({
   }
 }); //全局cache， sets just the max size
 
-var { UnMergeable } = useMerge();
+const { UnMergeable } = useMerge();
 
 export type DictRequest = (req: { url: string; dict: Dict }) => Promise<any[]>;
 
@@ -217,7 +217,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
         if (cached) {
           data = cached;
         } else {
-          var value = Array.isArray(context.value) ? context.value : [context.value];
+          const value = Array.isArray(context.value) ? context.value : [context.value];
           data = await this.getNodesByValues(value, context);
           if (data != null && !(data instanceof Array)) {
             logger.error("getNodesByValues需要返回数组，当前返回值：", data);
@@ -258,7 +258,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
   _registerNotify() {
     let notify: SuccessNotify = null;
     //如果正在加载中，则等待加载完成
-    var ret: Promise<any[]> = new Promise((resolve) => {
+    const ret: Promise<any[]> = new Promise((resolve) => {
       notify = (data: any[]) => {
         resolve(data);
       };
@@ -292,7 +292,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
       logger.warn("请配置getNodesByValues");
       return;
     }
-    for (var v of values) {
+    for (const v of values) {
       if (this.dataMap[v] || this._unfetchValues[v]) {
         continue;
       }
@@ -304,7 +304,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
     await nextTick();
     await nextTick();
     await nextTick();
-    var toFetchValues: any[] = [];
+    const toFetchValues: any[] = [];
     forEach(this._unfetchValues, (v) => {
       if (!v.loading) {
         v.loading = true;
@@ -312,9 +312,9 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
       }
     });
     if (toFetchValues.length > 0) {
-      var data = await this.getNodesByValues(toFetchValues);
+      const data = await this.getNodesByValues(toFetchValues);
       this.setData([...(this.data || []), ...data]);
-      for (var key of toFetchValues) {
+      for (const key of toFetchValues) {
         delete this._unfetchValues[key];
       }
       if (Object.keys(this._unfetchValues).length === 0) {
@@ -345,7 +345,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
     if (this.getData != null) {
       getFromRemote = async () => {
         // @ts-ignore
-        var maybeArr = await this.getData({ url, dict: this, ...context });
+        const maybeArr = await this.getData({ url, dict: this, ...context });
         if (Array.isArray(maybeArr)) {
           return maybeArr;
         } else {
@@ -354,7 +354,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
       };
     } else if (url) {
       getFromRemote = async () => {
-        var maybeArr = await dictRequest({ url, dict: this });
+        const maybeArr = await dictRequest({ url, dict: this });
         if (Array.isArray(maybeArr)) {
           return maybeArr;
         } else {
@@ -379,7 +379,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
         return cached.data;
       } else if (cached.loading) {
         return new Promise((resolve) => {
-          var callback = (data: any) => {
+          const callback = (data: any) => {
             resolve(data);
           };
           cached.callback.push(callback);
@@ -397,7 +397,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
         cached.data = dictData;
         cached.loaded = true;
         cached.loading = false;
-        for (var callback of cached.callback) {
+        for (const callback of cached.callback) {
           callback(dictData);
         }
         cached.callback = [];
@@ -417,7 +417,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
       this.dataMap = {};
       return;
     }
-    var map = {};
+    const map = {};
     if (this.data) {
       this.buildMap(map, this.data || []);
     }
@@ -470,9 +470,9 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
       value = [value];
     }
     //本地获取
-    var nodes: Array<any> = [];
+    const nodes: Array<any> = [];
     forEach(value, (item) => {
-      var node = this.dataMap[item];
+      const node = this.dataMap[item];
       if (node) {
         nodes.push(node);
       } else {
@@ -489,7 +489,7 @@ export class Dict<T = any> extends UnMergeable implements DictOptions<T> {
  * @param config
  */
 export function dict<T = any>(config: DictOptions<T>): UnwrapNestedRefs<Dict<any>> {
-  var ret = shallowReactive(new Dict(config));
+  const ret = shallowReactive(new Dict(config));
   if (!ret.prototype && ret.immediate) {
     ret.loadDict();
   }
