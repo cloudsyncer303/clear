@@ -6,7 +6,7 @@ import strip from "@rollup/plugin-strip";
 import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "vite";
 import DefineOptions from "unplugin-vue-define-options/vite";
-let { resolve } = path;
+const { resolve } = path;
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
   return {
