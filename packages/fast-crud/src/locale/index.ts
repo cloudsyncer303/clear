@@ -28,16 +28,16 @@ class I18n {
     if (instance.global) {
       instance = instance.global;
     }
-    var locales: string[] = instance.availableLocales;
-    for (var item of locales) {
+    const locales: string[] = instance.availableLocales;
+    for (const item of locales) {
       if (item.startsWith("zh")) {
-        var message = instance.getLocaleMessage(item);
-        var fsClone = cloneDeep(message.fs || {});
+        const message = instance.getLocaleMessage(item);
+        const fsClone = cloneDeep(message.fs || {});
         instance.mergeLocaleMessage(item, { fs: zhCN.fs });
         instance.mergeLocaleMessage(item, { fs: fsClone });
       } else if (item.startsWith("en")) {
-        var message = instance.getLocaleMessage(item);
-        var fsClone = cloneDeep(message.fs || {});
+        const message = instance.getLocaleMessage(item);
+        const fsClone = cloneDeep(message.fs || {});
         instance.mergeLocaleMessage(item, { fs: en.fs });
         instance.mergeLocaleMessage(item, { fs: fsClone });
       }
@@ -47,7 +47,7 @@ class I18n {
   }
 }
 
-export var i18n = new I18n();
+export const i18n = new I18n();
 
 export function useI18n() {
   if (i18n.vueI18nInstance != null) {
