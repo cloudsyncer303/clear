@@ -1,13 +1,13 @@
 import _ from "lodash-es";
 import logger from "../utils/util.log";
 // @ts-ignore
-let typeList = import.meta.glob("./list/*.ts", { eager: true });
-let defaultTypeCreators: Array<any> = [];
+const typeList = import.meta.glob("./list/*.ts", { eager: true });
+const defaultTypeCreators: Array<any> = [];
 _.forEach(typeList, (value: any) => {
   defaultTypeCreators.push(value.default);
 });
 
-let defaultTypes: any = {};
+const defaultTypes: any = {};
 
 function getTypes() {
   return defaultTypes;
@@ -18,7 +18,7 @@ function getType(key: string) {
 }
 
 function addTypes(newTypes: any) {
-  for (let key in newTypes) {
+  for (const key in newTypes) {
     defaultTypes[key] = newTypes[key];
   }
 }
@@ -27,7 +27,7 @@ export default {
   addTypes,
   getTypes,
   install() {
-    for (let creator of defaultTypeCreators) {
+    for (const creator of defaultTypeCreators) {
       _.forEach(creator(), (item, key) => {
         defaultTypes[key] = item;
       });
