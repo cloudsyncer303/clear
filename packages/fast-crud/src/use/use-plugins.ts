@@ -11,7 +11,7 @@ import { computed, isRef, nextTick } from "vue";
 import { useUi } from "@fast-crud/ui-interface";
 import logger from "../utils/util.log";
 import { useCompute } from "./use-compute";
-export var crudOptionsPlugins: Record<string, CrudOptionsPluginReg> = {};
+export const crudOptionsPlugins: Record<string, CrudOptionsPluginReg> = {};
 export function registerCrudOptionsPlugin(
   name: string,
   plugin: CrudOptionsPluginHandle,
@@ -35,12 +35,12 @@ export function getCrudOptionsPlugin(name: string): CrudOptionsPluginReg {
 registerCrudOptionsPlugin(
   "rowSelection",
   (selection: RowSelectionProps, ctx: UseCrudProps, crudOptions: any): CrudOptions => {
-    var crudExpose = ctx.crudExpose;
-    var crudBinding = crudExpose.crudBinding;
+    const crudExpose = ctx.crudExpose;
+    const crudBinding = crudExpose.crudBinding;
     function getRowKey() {
       return crudBinding.value.table.rowKey || "id";
     }
-    var { ui } = useUi();
+    const { ui } = useUi();
     if (!selection) {
       logger.warn("请配置settings.plugins.rowSelection.props参数");
       return;
@@ -62,7 +62,7 @@ registerCrudOptionsPlugin(
       multiple: selection.multiple,
       selectedRowKeys: selection.selectedRowKeys,
       onSelectedKeysChanged: async (changed) => {
-        var selectedRowKeys =
+        const selectedRowKeys =
           selection.selectedRowKeys instanceof Function ? selection.selectedRowKeys() : selection.selectedRowKeys;
         selectedRowKeys.value = [...changed];
         await nextTick();
@@ -84,11 +84,11 @@ registerCrudOptionsPlugin(
 registerCrudOptionsPlugin(
   "mobile",
   (mobileAdaptor: MobileAdaptorProps, ctx: UseCrudProps, crudOptions: any): CrudOptions => {
-    var rowHandle = crudOptions.rowHandle;
-    var buttons = rowHandle.buttons;
+    const rowHandle = crudOptions.rowHandle;
+    const buttons = rowHandle.buttons;
     let newButtons = {};
-    for (var buttonsKey in buttons) {
-      var button = buttons[buttonsKey];
+    for (const buttonsKey in buttons) {
+      const button = buttons[buttonsKey];
       if (isRef(button.dropdown)) {
         newButtons = button;
       } else {
