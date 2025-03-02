@@ -1,7 +1,7 @@
 import getIterate from "./private/getIterate.js";
 import { merge, identity, isString, toPath } from "lodash-es";
 export function getEachDeep(_: any): ForEachDeep {
-  var iterate = getIterate(_);
+  const iterate = getIterate(_);
 
   function eachDeep(obj: any, callback: any, options?: any) {
     if (callback === undefined) callback = identity;
@@ -44,4 +44,4 @@ export function getEachDeep(_: any): ForEachDeep {
 }
 
 export type ForEachDeep = (obj: any, callback: any, options?: any) => any;
-export var forEachDeep: ForEachDeep = getEachDeep({ isString });
+export const forEachDeep: ForEachDeep = getEachDeep({ isString });
