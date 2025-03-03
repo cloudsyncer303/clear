@@ -2,15 +2,15 @@
 import { ImportData } from "./d";
 import * as XLSX from "xlsx";
 
-var processCsvData = (dataString: string): ImportData => {
-  var dataStringLines = dataString.split(/\r\n|\n/);
-  var headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
+const processCsvData = (dataString: string): ImportData => {
+  const dataStringLines = dataString.split(/\r\n|\n/);
+  const headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
 
-  var list = [];
+  const list = [];
   for (let i = 1; i < dataStringLines.length; i++) {
-    var row = dataStringLines[i].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
+    const row = dataStringLines[i].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
     if (headers && row.length == headers.length) {
-      var obj: any = {};
+      const obj: any = {};
       for (let j = 0; j < headers.length; j++) {
         let d = row[j];
         if (d.length > 0) {
@@ -30,7 +30,7 @@ var processCsvData = (dataString: string): ImportData => {
   }
 
   // prepare columns list from headers
-  var columns = headers.map((c) => ({
+  const columns = headers.map((c) => ({
     title: c,
     key: c
   }));
@@ -42,18 +42,18 @@ var processCsvData = (dataString: string): ImportData => {
 };
 
 export async function importCsvFromFile(file: File) {
-  var reader = new FileReader();
+  const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onload = (evt) => {
       /* Parse data */
-      var bstr = evt.target.result;
-      var wb = XLSX.read(bstr, { type: "binary" });
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
       /* Get first worksheet */
-      var wsname = wb.SheetNames[0];
-      var ws = wb.Sheets[wsname];
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
       /* Convert array of arrays */
-      var data = XLSX.utils.sheet_to_csv(ws);
-      var imported = processCsvData(data);
+      const data = XLSX.utils.sheet_to_csv(ws);
+      const imported = processCsvData(data);
       resolve(imported);
     };
     reader.onerror = (evt) => {
