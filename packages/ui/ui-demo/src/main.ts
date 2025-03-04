@@ -15,7 +15,7 @@ import "dayjs/locale/zh-cn";
 import naive from 'naive-ui'
 
 
-let app = createApp(App)
+const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
