@@ -8,7 +8,7 @@ function getError(action: string, option: any, xhr: any) {
     msg = `fail to post ${action} ${xhr.status}`;
   }
 
-  var err: any = new Error(msg);
+  const err: any = new Error(msg);
   err.status = xhr.status;
   err.method = "post";
   err.url = action;
@@ -16,7 +16,7 @@ function getError(action: string, option: any, xhr: any) {
 }
 
 function getBody(xhr: any) {
-  var text = xhr.responseText || xhr.response;
+  const text = xhr.responseText || xhr.response;
   if (!text) {
     return text;
   }
@@ -33,8 +33,8 @@ export default function upload(option: any, onSuccess: any, onError: any) {
     return;
   }
 
-  var xhr = new XMLHttpRequest();
-  var action = option.action;
+  const xhr = new XMLHttpRequest();
+  const action = option.action;
 
   xhr.timeout = option.timeout;
   if (xhr.upload) {
@@ -46,7 +46,7 @@ export default function upload(option: any, onSuccess: any, onError: any) {
     };
   }
 
-  var formData = new FormData();
+  const formData = new FormData();
 
   if (option.data) {
     Object.keys(option.data).forEach((key) => {
@@ -74,9 +74,9 @@ export default function upload(option: any, onSuccess: any, onError: any) {
     xhr.withCredentials = true;
   }
 
-  var headers = option.headers || {};
+  const headers = option.headers || {};
 
-  for (var item in headers) {
+  for (const item in headers) {
     // eslint-disable-next-line no-prototype-builtins
     if (headers.hasOwnProperty(item) && headers[item] !== null) {
       xhr.setRequestHeader(item, headers[item]);
