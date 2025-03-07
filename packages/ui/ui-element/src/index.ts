@@ -12,7 +12,7 @@ export type UiSetupOptions = {
 };
 
 function set() {
-  const elementUi = new Element({
+  let elementUi = new Element({
     Message: ElMessage,
     Notification: ElNotification,
     MessageBox: ElMessageBox
