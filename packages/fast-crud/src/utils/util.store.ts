@@ -21,7 +21,7 @@ export default class TableStore {
   }
 
   getTableId() {
-    const tableName = this.tableName;
+    var tableName = this.tableName;
 
     let prefix = "fs-crud";
     if (this.id) {
@@ -35,8 +35,8 @@ export default class TableStore {
   }
 
   async getTable() {
-    const tableId = this.getTableId();
-    const saved = localStorage.getItem(tableId);
+    var tableId = this.getTableId();
+    var saved = localStorage.getItem(tableId);
     if (saved == null) {
       return;
     }
@@ -44,12 +44,12 @@ export default class TableStore {
   }
 
   async saveTable(table: any) {
-    const tableId = this.getTableId();
+    var tableId = this.getTableId();
     localStorage.setItem(tableId, JSON.stringify(table));
   }
 
   async clearTable() {
-    const tableId = this.getTableId();
+    var tableId = this.getTableId();
     localStorage.removeItem(tableId);
   }
 
@@ -71,8 +71,8 @@ export default class TableStore {
   }
 
   getItemKey() {
-    const $route = this.$router;
-    const keyType = this.keyType;
+    var $route = this.$router;
+    var keyType = this.keyType;
     let key = location.href;
     if ($route) {
       key = $route.path;
@@ -93,7 +93,7 @@ export default class TableStore {
     if (this.remoteStorage) {
       return await this.remoteStorage.get(key);
     }
-    const table = await this.getTable();
+    var table = await this.getTable();
     if (table == null) {
       return null;
     }
@@ -108,7 +108,7 @@ export default class TableStore {
       await this.remoteStorage.remove(key);
       return;
     }
-    const table = await this.getTable();
+    var table = await this.getTable();
     if (table == null) {
       return;
     }
