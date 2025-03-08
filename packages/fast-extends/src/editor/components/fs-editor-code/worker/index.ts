@@ -8,7 +8,7 @@ export type WorkerItem = {
   worker: any;
   match: (label: string) => boolean;
 };
-let WorkerBucket: WorkerItem[] = [];
+const WorkerBucket: WorkerItem[] = [];
 /**
  * 注册自定义worker
  */
@@ -19,7 +19,7 @@ export function registerWorker(labels: string | string[], worker: any) {
       if (typeof labels === "string") {
         return labels === label;
       }
-      for (let labelItem of labels) {
+      for (const labelItem of labels) {
         if (labelItem === "*") {
           return true;
         }
@@ -41,7 +41,7 @@ export function initWorkers() {
   window.MonacoEnvironment = {
     //@ts-ignore
     getWorker(_, label) {
-      for (let workerLoader of WorkerBucket) {
+      for (const workerLoader of WorkerBucket) {
         if (workerLoader.match(label)) {
           return new workerLoader.worker();
         }
