@@ -7,7 +7,7 @@ import { deepdash } from "./deepdash";
 import dash from "./util.dash";
 export * from "./util.log";
 
-export let utils = {
+export const utils = {
   logger,
   strings,
   trace: trace,
