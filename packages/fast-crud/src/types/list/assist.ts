@@ -8,7 +8,7 @@ function antdvColspan(ui: any, labelSpan: any) {
  * 辅助type 即将废弃，antdv已经有更好的方式做跨列配置
  */
 export default function () {
-  let { ui } = useUi();
+  const { ui } = useUi();
   return {
     colspan: {
       //跨列
