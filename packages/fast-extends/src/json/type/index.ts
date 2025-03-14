@@ -3,8 +3,8 @@ import types from "./types";
 
 export default {
   install(app: any) {
-    const newTypes = types();
-    const { addTypes } = useTypes();
+    let newTypes = types();
+    let { addTypes } = useTypes();
     addTypes(newTypes);
   }
 };
