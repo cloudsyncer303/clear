@@ -4,7 +4,7 @@ import * as qiniu from "qiniu-js";
 import { FsUploaderDoUploadOptions, FsUploaderQiniuOptions } from "../../d/type";
 
 export async function getToken(file: File, fileName: string, key: string, config: FsUploaderQiniuOptions) {
-  var ret = await config.getToken({
+  const ret = await config.getToken({
     fileName,
     key,
     file,
@@ -23,14 +23,14 @@ export async function getToken(file: File, fileName: string, key: string, config
 }
 
 async function doUpload({ file, fileName, onProgress, options }: FsUploaderDoUploadOptions) {
-  var key = await buildKey(file, fileName, options);
-  var token = await getToken(file, fileName, key, options);
+  const key = await buildKey(file, fileName, options);
+  const token = await getToken(file, fileName, key, options);
 
   return new Promise((resolve, reject) => {
     /**
      */
-    var observable: any = qiniu.upload(file, key, token, options.putExtra, options.putConfig);
-    var subscription = observable.subscribe({
+    const observable: any = qiniu.upload(file, key, token, options.putExtra, options.putConfig);
+    const subscription = observable.subscribe({
       next(res: any) {
         if (res) {
           onProgress(res.total);
@@ -54,10 +54,10 @@ async function doUpload({ file, fileName, onProgress, options }: FsUploaderDoUpl
 }
 
 export async function upload(context: FsUploaderDoUploadOptions) {
-  var { getConfig } = useUploader();
-  var global = getConfig("qiniu");
-  var options = context.options;
-  var config = merge(cloneDeep(global), options);
+  const { getConfig } = useUploader();
+  const global = getConfig("qiniu");
+  const options = context.options;
+  const config = merge(cloneDeep(global), options);
   context.options = config;
   return await doUpload(context);
 }
