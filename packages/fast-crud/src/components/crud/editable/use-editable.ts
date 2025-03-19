@@ -28,7 +28,7 @@ function eachTree(tree: any, callback: any) {
 }
 
 function useTableData(props: any, tableRef: any) {
-  const ui = uiContext.get();
+  var ui = uiContext.get();
 
   function getData() {
     if (props.data) {
@@ -62,8 +62,8 @@ function useTableData(props: any, tableRef: any) {
 }
 
 export function useEditable(props: any, ctx: any, tableRef: any): { editable: EditableTable } {
-  const tableData = useTableData(props, tableRef);
-  const editableRows: Record<number, EditableRow> = reactive([]);
+  var tableData = useTableData(props, tableRef);
+  var editableRows: Record<number, EditableRow> = reactive([]);
   function getIdFromRow(row: any) {
     if (typeof props.rowKey === "string") {
       return row[props.rowKey];
@@ -76,11 +76,11 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function editableEachRows(call: (opts: EditableEachRowsOpts) => any) {
-    for (const key in editableRows) {
-      const row = editableRows[key];
-      const cells = row.cells;
-      const rowData = row.rowData;
-      const res = call({ rowData, row, cells });
+    for (var key in editableRows) {
+      var row = editableRows[key];
+      var cells = row.cells;
+      var rowData = row.rowData;
+      var res = call({ rowData, row, cells });
       if (res === "break") {
         return;
       }
@@ -95,9 +95,9 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
     });
   }
 
-  const { merge } = useMerge();
+  var { merge } = useMerge();
   // editable
-  const options: ComputedRef<EditableProps> = computed(() => {
+  var options: ComputedRef<EditableProps> = computed(() => {
     return merge(
       {
         enabled: false,
@@ -131,13 +131,13 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
       set(tableRow, key, value);
     }
 
-    const updateCell: any = computed(() => {
+    var updateCell: any = computed(() => {
       return col.editable?.updateCell || options.value.updateCell;
     });
-    const showAction: any = computed(() => {
+    var showAction: any = computed(() => {
       return col.editable?.showAction || options.value.showAction;
     });
-    const cell: EditableCell = reactive({
+    var cell: EditableCell = reactive({
       mode: editableId < 0 ? "add" : "edit",
       oldValue: undefined,
       newValue: undefined,
@@ -170,9 +170,9 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
         return form[key];
       },
       active: (opts: EditableCellActiveProps = {}) => {
-        const exclusive = opts.exclusive ?? options.value.exclusive;
+        var exclusive = opts.exclusive ?? options.value.exclusive;
         if (exclusive) {
-          const effect = opts.exclusiveEffect ?? options.value.exclusiveEffect;
+          var effect = opts.exclusiveEffect ?? options.value.exclusiveEffect;
           if (effect === "save") {
             saveEach();
           } else {
@@ -188,7 +188,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
 
         cell.oldValue = getValue(key);
 
-        const formItem = options.value.editForm[key];
+        var formItem = options.value.editForm[key];
         if (formItem) {
           setDefaultValue(formItem, tableRow);
         }
@@ -215,7 +215,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
         delete cell.oldValue;
       },
       save: async () => {
-        const updateCell = unref(cell.updateCell);
+        var updateCell = unref(cell.updateCell);
         if (!updateCell) {
           logger.warn(
             "没有配置table.editable.updateCell方法,无法保存，相关文档：http://fast-crud.docmirror.cn/api/crud-options/table.html#editable"
@@ -224,12 +224,12 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
         }
         cell.loading = true;
         try {
-          const res = await updateCell({ editableId, row: tableRow, key, value: getValue(key) });
-          const rowKeyValue = tableRow[options.value.rowKey];
+          var res = await updateCell({ editableId, row: tableRow, key, value: getValue(key) });
+          var rowKeyValue = tableRow[options.value.rowKey];
           if (rowKeyValue == null || rowKeyValue <= 0) {
             //是添加
             //需要返回res.id
-            const returnId = res && res[options.value.rowKey];
+            var returnId = res && res[options.value.rowKey];
             if (returnId == null) {
               logger.error(
                 `对于添加的行，updateCell方法需要返回{'id':value}，如果你配置了别的rowKey，需要返回{[rowKey]:id}。
@@ -249,16 +249,16 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function createEditableRow(editableId: number, rowData: any) {
-    const cells: Record<string, EditableCell> = {};
+    var cells: Record<string, EditableCell> = {};
     eachTree(props.columns, (item: ColumnProps) => {
       cells[item.key] = createEditableCell(rowData, item.key, editableId, item);
     });
-    const validator = computed(() => {
+    var validator = computed(() => {
       return createValidator(cells);
     });
-    const id = getIdFromRow(rowData);
-    const isAdd = id == null || id < 0;
-    const editableRow: EditableRow = reactive({
+    var id = getIdFromRow(rowData);
+    var isAdd = id == null || id < 0;
+    var editableRow: EditableRow = reactive({
       isAdd,
       rowData,
       editableId,
@@ -308,9 +308,9 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
           await editableRow.validator.validate(row);
           return true;
         } catch (e: any) {
-          const { errors, fields } = e;
+          var { errors, fields } = e;
           forEach(fields, (errors: any, key: string) => {
-            const cell = editableRow.cells[key];
+            var cell = editableRow.cells[key];
             if (cell) {
               cell.validateErrors = errors;
             }
@@ -320,16 +320,16 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
         }
       },
       getRowData: () => {
-        const row = cloneDeep(editableRow.rowData);
+        var row = cloneDeep(editableRow.rowData);
         delete row[props.editable.rowKey];
         delete row.children;
         return row;
       },
       save: async (opts: { doSave: (opts: any) => Promise<void> }) => {
-        const { doSave } = opts;
-        const row = editableRow.rowData;
-        const { merge } = useMerge();
-        const errors = await editableRow.validate();
+        var { doSave } = opts;
+        var row = editableRow.rowData;
+        var { merge } = useMerge();
+        var errors = await editableRow.validate();
         if (errors !== true) {
           return;
         }
@@ -343,7 +343,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
         }
 
         editableRow.loading = true;
-        const saveRow = editableRow.getRowData();
+        var saveRow = editableRow.getRowData();
         try {
           await doSave({ isAdd: editableRow.isAdd, row: saveRow, setData });
           editableRow.persist();
@@ -366,11 +366,11 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
     );
     //多级数据
     if (rowData.children && rowData.children.length > 0) {
-      for (const child of rowData.children) {
+      for (var child of rowData.children) {
         if (!child[props.editable.rowKey]) {
           child[props.editable.rowKey] = nextEditableId();
         }
-        const editableId = child[props.editable.rowKey];
+        var editableId = child[props.editable.rowKey];
         editableRows[editableId] = createEditableRow(editableId, child);
       }
     }
@@ -382,9 +382,9 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function unshiftEditableRow(rowData: any) {
-    const editableId = nextEditableAddId();
+    var editableId = nextEditableAddId();
     rowData[props.editable.rowKey] = editableId;
-    const editableRow = createEditableRow(editableId, rowData);
+    var editableRow = createEditableRow(editableId, rowData);
     editableRows[editableId] = editableRow;
     return editableRow;
   }
@@ -405,7 +405,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
       data = tableData.getData();
     }
 
-    const tmpRows = Object.assign({}, editableRows);
+    var tmpRows = Object.assign({}, editableRows);
 
     //清空editableRows
     forOwn(editableRows, (_, key: any) => {
@@ -416,7 +416,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
       if (!rowData[props.editable.rowKey]) {
         rowData[props.editable.rowKey] = nextEditableId();
       }
-      const editableId = rowData[props.editable.rowKey];
+      var editableId = rowData[props.editable.rowKey];
       if (tmpRows[editableId]) {
         editableRows[editableId] = tmpRows[editableId];
       } else {
@@ -429,10 +429,10 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function buildThinData(data: any[]) {
-    const rowKey = props.editable.rowKey;
-    const thinData: any = [];
-    for (const row of data) {
-      const thinRow: any = { [rowKey]: row[rowKey] };
+    var rowKey = props.editable.rowKey;
+    var thinData: any = [];
+    for (var row of data) {
+      var thinRow: any = { [rowKey]: row[rowKey] };
       if (row.children && row.children.length) {
         thinRow.children = buildThinData(row.children);
       }
@@ -442,7 +442,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
   watch(
     () => {
-      const data = props.data;
+      var data = props.data;
       let thinData: any[] = [];
       if (data != null && data instanceof Array) {
         thinData = buildThinData(data);
@@ -585,8 +585,8 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function setDefaultValue(formItem: FormItemProps, row: any) {
-    const value = get(row, formItem.key);
-    const defValue = unref(formItem.value);
+    var value = get(row, formItem.key);
+    var defValue = unref(formItem.value);
     if (defValue != null && value == null) {
       set(row, formItem.key, defValue);
     }
@@ -596,12 +596,12 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
     let row = opts.row || { [options.value.rowKey]: --addIndex, [props.rowKey]: addIndex };
     setDefaultForm(options.value.addForm, row);
     if (opts.addRowFunc) {
-      const newRow = await opts.addRowFunc({ row: opts.row });
+      var newRow = await opts.addRowFunc({ row: opts.row });
       if (newRow) {
         row = newRow;
       }
     } else if (props.editable.addRow) {
-      const newRow = await props.editable.addRow(tableData.getData(), row);
+      var newRow = await props.editable.addRow(tableData.getData(), row);
       if (newRow) {
         row = newRow;
       }
@@ -611,8 +611,8 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
 
     if (opts.active ?? props.editable.activeDefault) {
       await nextTick();
-      const editableId = getEditableIdFromRow(row);
-      const editableRow = getEditableRow(editableId);
+      var editableId = getEditableIdFromRow(row);
+      var editableRow = getEditableRow(editableId);
       if (editableRow) {
         editableRow.active();
       }
@@ -621,14 +621,14 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
 
   function removeTableRowByEditableId(editableId: number, data: any[]): boolean {
     for (let i = 0; i < data.length; i++) {
-      const row = data[i];
-      const id = getEditableIdFromRow(row);
+      var row = data[i];
+      var id = getEditableIdFromRow(row);
       if (id === editableId) {
         remove(data, row);
         return true;
       }
       if (row.children && row.children.length > 0) {
-        const del = removeTableRowByEditableId(editableId, row.children);
+        var del = removeTableRowByEditableId(editableId, row.children);
         if (del) {
           return;
         }
@@ -643,7 +643,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function activeCols(opts: EditableActiveColsOptions) {
-    const { cols } = opts;
+    var { cols } = opts;
     editableEachRows(({ cells }) => {
       forEach(cols, (key) => {
         cells[key].active({ ...opts, exclusive: false });
@@ -656,7 +656,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function getActiveRows() {
-    const rows: any[] = [];
+    var rows: any[] = [];
     editableEachRows(({ row }) => {
       if (row.isEditing) {
         rows.push(row);
@@ -666,11 +666,11 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   async function validate() {
-    const errors: any = {};
+    var errors: any = {};
     let hasError = false;
-    for (const key in editableRows) {
-      const row = editableRows[key];
-      const res = await row.validate();
+    for (var key in editableRows) {
+      var row = editableRows[key];
+      var res = await row.validate();
       if (res != true) {
         errors[row.editableId] = res;
         hasError = true;
@@ -683,7 +683,7 @@ export function useEditable(props: any, ctx: any, tableRef: any): { editable: Ed
   }
 
   function removeDataEditableId(data: any[]) {
-    for (const row of data) {
+    for (var row of data) {
       delete row[props.editable.rowKey];
       if (row.children && row.children.length > 0) {
         removeDataEditableId(row.children);
