@@ -6,11 +6,11 @@
 */
 
 function has (browser) {
-    const ua = navigator.userAgent;
+    var ua = navigator.userAgent;
     if (browser === 'ie') {
-        const isIE = ua.indexOf('compatible') > -1 && ua.indexOf('MSIE') > -1;
+        var isIE = ua.indexOf('compatible') > -1 && ua.indexOf('MSIE') > -1;
         if (isIE) {
-            const reIE = new RegExp('MSIE (\\d+\\.\\d+);');
+            var reIE = new RegExp('MSIE (\\d+\\.\\d+);');
             reIE.test(ua);
             return parseFloat(RegExp['$1']);
         } else {
@@ -21,12 +21,12 @@ function has (browser) {
     }
 }
 
-const csv = {
+var csv = {
     _isIE11 () {
         let iev = 0;
-        const ieold = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
-        const trident = !!navigator.userAgent.match(/Trident\/7.0/);
-        const rv = navigator.userAgent.indexOf('rv:11.0');
+        var ieold = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
+        var trident = !!navigator.userAgent.match(/Trident\/7.0/);
+        var rv = navigator.userAgent.indexOf('rv:11.0');
 
         if (ieold) {
             iev = Number(RegExp.$1);
@@ -46,10 +46,10 @@ const csv = {
     },
 
     _getDownloadUrl (text) {
-        const BOM = '\uFEFF';
+        var BOM = '\uFEFF';
         // Add BOM to text for open in excel correctly
         if (window.Blob && window.URL && window.URL.createObjectURL) {
-            const csvData = new Blob([BOM + text], { type: 'text/csv' });
+            var csvData = new Blob([BOM + text], { type: 'text/csv' });
             return URL.createObjectURL(csvData);
         } else {
             return 'data:attachment/csv;charset=utf-8,' + BOM + encodeURIComponent(text);
@@ -59,18 +59,18 @@ const csv = {
     download (filename, text) {
         if (has('ie') && has('ie') < 10) {
             // has module unable identify ie11 and Edge
-            const oWin = window.top.open('about:blank', '_blank');
+            var oWin = window.top.open('about:blank', '_blank');
             oWin.document.charset = 'utf-8';
             oWin.document.write(text);
             oWin.document.close();
             oWin.document.execCommand('SaveAs', filename + '.csv');
             oWin.close();
         } else if (has('ie') === 10 || this._isIE11() || this._isEdge()) {
-            const BOM = '\uFEFF';
-            const csvData = new Blob([BOM + text], { type: 'text/csv' });
+            var BOM = '\uFEFF';
+            var csvData = new Blob([BOM + text], { type: 'text/csv' });
             navigator.msSaveBlob(csvData, filename + '.csv');
         } else {
-            const link = document.createElement('a');
+            var link = document.createElement('a');
             link.download = filename + '.csv';
             link.href = this._getDownloadUrl(text);
             document.body.appendChild(link);
