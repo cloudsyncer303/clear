@@ -6,9 +6,9 @@
 
 /* eslint-disable */
 
-var newLine = '\r\n';
-var appendLine = (content, row, { separator, quoted }) => {
-    var line = row.map(data => {
+const newLine = '\r\n';
+const appendLine = (content, row, { separator, quoted }) => {
+    const line = row.map(data => {
         if (!quoted) return data;
         // quote data
         data = typeof data === 'string' ? data.replace(/"/g, '"') : data;
@@ -17,7 +17,7 @@ var appendLine = (content, row, { separator, quoted }) => {
     content.push(line.join(separator));
 };
 
-var defaults = {
+const defaults = {
     separator: ',',
     quoted: false
 };
@@ -25,8 +25,8 @@ var defaults = {
 export default function csv(columns, datas, options, noHeader = false) {
     options = Object.assign({}, defaults, options);
     let columnOrder;
-    var content = [];
-    var column = [];
+    const content = [];
+    const column = [];
 
     if (columns) {
         columnOrder = columns.map(v => {
