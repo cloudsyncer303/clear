@@ -1,7 +1,7 @@
 import { uiContext } from "../../ui";
 
 export default function () {
-  let ui = uiContext.get();
+  const ui = uiContext.get();
 
   return {
     "dict-cascader": {
