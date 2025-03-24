@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import { asyncCompute, compute, DynamicallyCrudOptions } from "../src";
 
-const crudOptions: DynamicallyCrudOptions = {
+let crudOptions: DynamicallyCrudOptions = {
   table: {
     scroll: {
       x: 1500
