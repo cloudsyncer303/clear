@@ -10,22 +10,22 @@ import { FsUploaderDoUploadOptions, FsUploaderFormOptions } from "../../d/type";
  * @returns {Promise<unknown>}
  */
 async function doUpload(opts: FsUploaderDoUploadOptions) {
-  const { file, fileName, onProgress } = opts;
-  const options = opts.options as FsUploaderFormOptions;
-  const key = await buildKey(file, fileName, options);
+  var { file, fileName, onProgress } = opts;
+  var options = opts.options as FsUploaderFormOptions;
+  var key = await buildKey(file, fileName, options);
 
   if (options.data == null) {
     options.data = {};
   }
   options.data.key = key;
-  const ajaxOptions = {
+  var ajaxOptions = {
     file,
     onProgress,
     timeout: 60000,
     ...options
   };
   delete ajaxOptions.uploadRequest;
-  const uploadRequest = options.uploadRequest ?? doAjax;
+  var uploadRequest = options.uploadRequest ?? doAjax;
   let res = await uploadRequest(ajaxOptions);
   if (options.successHandle) {
     res = await options.successHandle(res, ajaxOptions);
@@ -41,8 +41,8 @@ async function doUpload(opts: FsUploaderDoUploadOptions) {
 }
 
 export async function upload(context: FsUploaderDoUploadOptions) {
-  const { getConfig } = useUploader();
-  const global = getConfig("form");
+  var { getConfig } = useUploader();
+  var global = getConfig("form");
   context.options = merge({}, cloneDeep(global), context.options);
   return await doUpload(context);
 }
