@@ -11,10 +11,10 @@ dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
 
 export default function () {
-  const ui = uiContext.get();
+  let ui = uiContext.get();
 
   function buildDateValue(scope: ValueBuilderContext) {
-    const { row, key, value } = scope;
+    let { row, key, value } = scope;
     if (value != null) {
       if (ui.type === "naive") {
         row[key] = dayjs(value).valueOf();
@@ -25,7 +25,7 @@ export default function () {
     }
   }
 
-  const types: Record<string, ColumnCompositionProps> = {
+  let types: Record<string, ColumnCompositionProps> = {
     datetime: {
       form: {
         component: {
