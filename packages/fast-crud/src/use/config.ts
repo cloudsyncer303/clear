@@ -6,7 +6,7 @@ export type LoggerConfig = {
 export type GlobalConfig = {
   logger?: LoggerConfig;
 };
-export const GlobalConfig: GlobalConfig = {
+export let GlobalConfig: GlobalConfig = {
   logger: {
     off: {
       tableColumns: false
