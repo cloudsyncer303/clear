@@ -32,7 +32,7 @@ import { useExpose } from "./use-expose";
 import { exportTable } from "../lib/fs-export";
 import { getCrudOptionsPlugin } from "../use/use-plugins";
 
-var { merge } = useMerge();
+const { merge } = useMerge();
 
 // 导出useCrud
 export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R> {
@@ -40,27 +40,27 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
     //@ts-ignore
     ctx.context = {};
   }
-  var ui = uiContext.get();
-  var { t } = useI18n();
-  var ct = (name: string) => {
+  const ui = uiContext.get();
+  const { t } = useI18n();
+  const ct = (name: string) => {
     return computed(() => {
       return t(name);
     });
   };
 
   let options: CrudOptions = ctx.crudOptions as CrudOptions;
-  var crudExpose = ctx.expose || ctx.crudExpose;
+  const crudExpose = ctx.expose || ctx.crudExpose;
   if (!crudExpose) {
     throw new Error("crudExpose不能为空，请给useCrud传入{crudExpose}参数");
   }
-  var expose: CrudExpose = crudExpose;
+  const expose: CrudExpose = crudExpose;
 
-  var { crudBinding } = expose;
+  const { crudBinding } = expose;
 
-  var { doRefresh, doValueResolve } = expose;
+  const { doRefresh, doValueResolve } = expose;
 
   function usePagination() {
-    var events = ui.pagination.onChange({
+    const events = ui.pagination.onChange({
       setCurrentPage(current: number) {
         crudBinding.value.pagination[ui.pagination.currentPage] = current;
       },
@@ -96,7 +96,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
           } else if (context.mode === "add") {
             doValueResolve(context);
             if (options.mode?.name === "local") {
-              var index = options.mode.isAppendWhenAdd ? expose.getTableData().length : 0;
+              const index = options.mode.isAppendWhenAdd ? expose.getTableData().length : 0;
               expose.insertTableRow(index, context.form);
             } else {
               if (!crudBinding.value.request?.addRequest) {
@@ -184,7 +184,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
             column.sortOrder = false;
           });
           //element 清空sort
-          var baseTableRef = crudExpose.getBaseTableRef();
+          const baseTableRef = crudExpose.getBaseTableRef();
           if (baseTableRef?.clearSort) {
             baseTableRef.clearSort();
           }
@@ -222,7 +222,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
   }
 
   function useToolbar() {
-    var exporting = ref(false);
+    const exporting = ref(false);
     return {
       toolbar: {
         buttons: {
@@ -286,15 +286,15 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
           }
         },
         "onUpdate:columns"(value: TableColumnsProps) {
-          var original = crudBinding.value.table.columns;
+          const original = crudBinding.value.table.columns;
 
           function updateColumns(old: TableColumnsProps, value: TableColumnsProps) {
-            var columns: TableColumnsProps = {};
+            const columns: TableColumnsProps = {};
             forEach(value, (item) => {
-              var oldColumn = old[item.key];
+              const oldColumn = old[item.key];
               if (oldColumn) {
                 delete oldColumn.order;
-                var newColumn = merge({ ...oldColumn }, item);
+                const newColumn = merge({ ...oldColumn }, item);
                 columns[item.key] = newColumn;
                 if (oldColumn.children) {
                   newColumn.children = updateColumns(oldColumn.children, item.children);
@@ -304,7 +304,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
             return columns;
           }
 
-          var newColumns = updateColumns(original, value);
+          const newColumns = updateColumns(original, value);
           crudBinding.value.table.columns = newColumns;
           crudBinding.value.table.columnsMap = buildTableColumnsFlatMap({}, newColumns);
         }
@@ -316,7 +316,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
     return {
       table: {
         onSortChange(sortChange: { isServerSort: boolean; prop: any; asc: any; order: any }) {
-          var { isServerSort, prop, asc, order } = sortChange;
+          const { isServerSort, prop, asc, order } = sortChange;
 
           forEachTableColumns(crudBinding.value.table.columns, (column: ColumnProps) => {
             if (column.key === prop) {
@@ -326,7 +326,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
             }
           });
 
-          var oldSort = crudBinding.value.table.sort;
+          const oldSort = crudBinding.value.table.sort;
           crudBinding.value.table.sort = isServerSort ? { prop, order, asc } : null;
           if (isServerSort || oldSort != null) {
             expose.doRefresh();
@@ -351,7 +351,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
   }
 
   function useEditable() {
-    var { compute } = useCompute();
+    const { compute } = useCompute();
     return {
       actionbar: {
         buttons: {
@@ -372,8 +372,8 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
               text: "删除",
               ...ui.button.colors("danger"),
               click: async (context: ScopeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
                 await expose.editable.doRemoveRow({ editableId, row });
               }
             }
@@ -382,17 +382,17 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
             edit: {
               text: "编辑",
               loading: compute((context: ComputeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
-                var editableRow = expose.editable.getEditableRow(editableId);
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
+                const editableRow = expose.editable.getEditableRow(editableId);
                 return !!editableRow?.loading;
               }),
               click: async (context: ScopeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
                 if (crudBinding.value.table.editable.exclusive) {
                   //排他式激活
-                  var activeRows: EditableRow[] = expose.editable.getActiveRows();
+                  const activeRows: EditableRow[] = expose.editable.getActiveRows();
                   forEach(activeRows, (item: EditableRow) => {
                     if (crudBinding.value.table.editable.exclusiveEffect === "save") {
                       expose.editable.doSaveRow({ row: item.rowData });
@@ -404,8 +404,8 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
                 expose.editable.getEditableRow(editableId)?.active();
               },
               show: compute((context: ComputeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
                 return !expose.editable?.getEditableRow(editableId)?.isEditing;
               })
             },
@@ -413,24 +413,24 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
               text: "保存",
               loading: false,
               click: async (context: ScopeContext) => {
-                var { index, row } = context;
+                const { index, row } = context;
                 await expose.editable.doSaveRow({ row });
               },
               show: compute((context: ComputeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
                 return !!expose.editable?.getEditableRow(editableId)?.isEditing;
               })
             },
             cancel: {
               text: "取消",
               click: async (context: ScopeContext) => {
-                var { index, row } = context;
+                const { index, row } = context;
                 await expose.editable?.doCancelRow({ row });
               },
               show: compute((context: ComputeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
                 return !!expose.editable?.getEditableRow(editableId)?.isEditing;
               })
             },
@@ -438,8 +438,8 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
               text: "删除",
               ...ui.button.colors("danger"),
               click: async (context: ScopeContext) => {
-                var { index, row } = context;
-                var editableId = row[crudBinding.value.table.editable.rowKey];
+                const { index, row } = context;
+                const editableId = row[crudBinding.value.table.editable.rowKey];
                 await expose.editable?.doRemoveRow({ row, editableId });
               }
             }
@@ -448,19 +448,19 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
       }
     };
   }
-  var { cloneDeep } = useMerge();
+  const { cloneDeep } = useMerge();
   function afterUseCrud(bindings: CrudBinding) {
     bindings.search.validatedForm = cloneDeep(bindings.search.initialForm);
   }
 
   function rebuildCrudBindings(inputOpts: DynamicallyCrudOptions) {
     let userOpts = cloneDeep(inputOpts);
-    var commonOptions = defaultCrudOptions.commonOptions(ctx);
-    var baseOptions = defaultCrudOptions.defaultOptions({ t });
+    const commonOptions = defaultCrudOptions.commonOptions(ctx);
+    const baseOptions = defaultCrudOptions.defaultOptions({ t });
     options = merge({}, baseOptions, commonOptions, userOpts);
-    var settings: CrudSettings = unref(options.settings) as CrudSettings;
+    const settings: CrudSettings = unref(options.settings) as CrudSettings;
     if (settings) {
-      var plugins = unref(settings.plugins) as CrudOptionsPlugins;
+      const plugins = unref(settings.plugins) as CrudOptionsPlugins;
       forEach(plugins, (plugin, key) => {
         if (plugin.enabled === false) {
           return;
@@ -468,7 +468,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
         let handle: CrudOptionsPluginHandle = plugin.handle;
         let opts: CrudOptionsPluginOpts = {};
         if (handle == null) {
-          var plug = getCrudOptionsPlugin(key);
+          const plug = getCrudOptionsPlugin(key);
           if (plug != null) {
             handle = plug.handle;
             opts = plug.opts;
@@ -477,8 +477,8 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
         if (handle == null) {
           return;
         }
-        var before = plugin.before ?? opts.before;
-        var pluginOptions = handle(plugin.props, ctx, options);
+        const before = plugin.before ?? opts.before;
+        const pluginOptions = handle(plugin.props, ctx, options);
         if (before !== false) {
           userOpts = merge(pluginOptions, userOpts);
         } else {
@@ -487,7 +487,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
       });
     }
 
-    var userOptions = merge(
+    const userOptions = merge(
       baseOptions,
       usePagination(),
       useFormSubmit(),
@@ -502,9 +502,9 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
       userOpts
     );
 
-    var { buildColumns } = useColumns();
+    const { buildColumns } = useColumns();
     //初始化columns，将crudOptions.columns里面的配置转化为crudBinding
-    var bindings = buildColumns(userOptions);
+    const bindings = buildColumns(userOptions);
     afterUseCrud(bindings);
     return bindings;
   }
@@ -516,7 +516,7 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
   }
 
   function appendCrudOptions(overOptions: DynamicallyCrudOptions): DynamicallyCrudOptions {
-    var newOptions = merge({}, options, overOptions);
+    const newOptions = merge({}, options, overOptions);
     resetCrudOptions(newOptions);
     options = newOptions;
     return newOptions;
@@ -540,14 +540,14 @@ export function useCrud<T = any, R = any>(ctx: UseCrudProps<T, R>): UseCrudRet<R
 }
 
 function useFsImpl(props: UseFsProps): UseFsRet | Promise<UseCrudRet> {
-  var { createCrudOptions, crudExposeRef } = props;
-  var crudRef = props.crudRef || ref();
+  const { createCrudOptions, crudExposeRef } = props;
+  const crudRef = props.crudRef || ref();
   // crud 配置的ref
-  var crudBinding: Ref<CrudBinding> = props.crudBinding || ref({});
+  const crudBinding: Ref<CrudBinding> = props.crudBinding || ref({});
   // 暴露的方法
   let crudExpose = props.crudExpose;
   if (!crudExpose) {
-    var res = useExpose({ crudRef, crudBinding });
+    const res = useExpose({ crudRef, crudBinding });
     crudExpose = res.crudExpose;
   }
 
@@ -558,12 +558,12 @@ function useFsImpl(props: UseFsProps): UseFsRet | Promise<UseCrudRet> {
   if (props.context == null) {
     props.context = {};
   }
-  var context = props.context;
+  const context = props.context;
   if (props.onExpose) {
     props.onExpose({ crudRef, crudBinding, crudExpose, context });
   }
   // 你的crud配置
-  var createCrudOptionsRet = createCrudOptions({
+  const createCrudOptionsRet = createCrudOptions({
     ...props,
     crudExpose,
     expose: crudExpose,
@@ -571,10 +571,10 @@ function useFsImpl(props: UseFsProps): UseFsRet | Promise<UseCrudRet> {
   });
 
   function initCrud(createCrudOptionsRet: CreateCrudOptionsRet) {
-    var useCrudProps: UseCrudProps = { crudExpose, ...createCrudOptionsRet, context };
+    const useCrudProps: UseCrudProps = { crudExpose, ...createCrudOptionsRet, context };
 
     merge(createCrudOptionsRet.crudOptions, props.crudOptionsOverride);
-    var useCrudRet = useCrud(useCrudProps);
+    const useCrudRet = useCrud(useCrudProps);
     return {
       ...createCrudOptionsRet,
       ...useCrudRet,
@@ -607,12 +607,12 @@ export type UseFsRefOptions = {
 };
 export function useFsRef() {
   // crud组件的ref
-  var crudRef: Ref = ref();
+  const crudRef: Ref = ref();
   // crud 配置的ref
-  var crudBinding: Ref<CrudBinding> = ref();
+  const crudBinding: Ref<CrudBinding> = ref();
 
-  var context: any = {};
-  var { crudExpose } = useExpose({ crudBinding, crudRef });
+  const context: any = {};
+  const { crudExpose } = useExpose({ crudBinding, crudRef });
   return {
     crudRef,
     crudBinding,
