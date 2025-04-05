@@ -17,15 +17,15 @@ export type OpenFormDialogProps<R = any> = {
 };
 
 let seed = 0;
-const FsFormWrapperList: {
+var FsFormWrapperList: {
   [key: string]: FormWrapperInstance;
 } = {};
 
 // 不建议使用，不含上下文，会丢失主题
 async function createFormWrapper<R = any>(opts: FormProps<R>) {
-  const id = opts.id || `${seed++}`;
+  var id = opts.id || `${seed++}`;
 
-  const container = document.createElement("div");
+  var container = document.createElement("div");
 
   return new Promise((resolve, reject) => {
     let instance: FormWrapperInstance = FsFormWrapperList[id];
@@ -33,7 +33,7 @@ async function createFormWrapper<R = any>(opts: FormProps<R>) {
       instance.vm.exposed.open(opts);
       resolve(instance);
     }
-    const vNode = createVNode(FsFormWrapper, {
+    var vNode = createVNode(FsFormWrapper, {
       id,
       onClosed() {
         if (!opts.id) {
@@ -43,10 +43,10 @@ async function createFormWrapper<R = any>(opts: FormProps<R>) {
     });
     vNode.appContext = FsFormWrapper._context; // || message._context;
     render(vNode, container);
-    const appendTo = document.body;
+    var appendTo = document.body;
     // instances will remove this item when close function gets called. So we do not need to worry about it.
     appendTo.appendChild(container);
-    const vm = vNode.component!;
+    var vm = vNode.component!;
 
     instance = {
       id,
@@ -65,7 +65,7 @@ async function createFormWrapper<R = any>(opts: FormProps<R>) {
 export function useFormWrapper() {
   let pd: any = null;
   try {
-    const wrapperProvider: Function = inject("use:form:wrapper", () => {});
+    var wrapperProvider: Function = inject("use:form:wrapper", () => {});
     pd = wrapperProvider();
   } catch (e) {
     logger.warn("cant inject use:form:wrapper，建议在App.vue中使用<fs-form-provider>组件包裹<router-view/>", e);
@@ -86,8 +86,8 @@ export function useFormWrapper() {
   }
 
   async function openCrudFormDialog<R = any>(opts: OpenFormDialogProps<R>) {
-    const { buildFormOptions } = useColumns();
-    const formOptions = buildFormOptions(opts.crudOptions, opts.context);
+    var { buildFormOptions } = useColumns();
+    var formOptions = buildFormOptions(opts.crudOptions, opts.context);
     return await openDialog(formOptions);
   }
 
