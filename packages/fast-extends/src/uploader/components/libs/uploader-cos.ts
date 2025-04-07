@@ -6,9 +6,9 @@ import { FsUploaderCosOptions, FsUploaderDoUploadOptions, FsUploaderResult } fro
 
 export function getOssClient(options: FsUploaderCosOptions) {
   let client = null;
-  const secretId = options.secretId;
-  const secretKey = options.secretKey;
-  const getAuthorization = options.getAuthorization;
+  var secretId = options.secretId;
+  var secretKey = options.secretKey;
+  var getAuthorization = options.getAuthorization;
   if (!secretId && !secretKey && getAuthorization) {
     client = new COS({
       // 必选参数
@@ -33,10 +33,10 @@ export function getOssClient(options: FsUploaderCosOptions) {
   return client;
 }
 async function doUpload({ file, fileName, onProgress, options }: FsUploaderDoUploadOptions): Promise<FsUploaderResult> {
-  const key = await buildKey(file, fileName, options);
-  const config = options as FsUploaderCosOptions;
+  var key = await buildKey(file, fileName, options);
+  var config = options as FsUploaderCosOptions;
   // TODO 大文件需要分片上传
-  const cos = getOssClient(config);
+  var cos = getOssClient(config);
   return new Promise((resolve, reject) => {
     // onProgress({
     //   total: 0,
@@ -49,7 +49,7 @@ async function doUpload({ file, fileName, onProgress, options }: FsUploaderDoUpl
         Key: key,
         Body: file,
         onProgress(progressEvent) {
-          const e = progressEvent;
+          var e = progressEvent;
           if (e.total > 0) {
             e.percent = Math.floor((e.loaded / e.total) * 100);
           }
@@ -75,10 +75,10 @@ async function doUpload({ file, fileName, onProgress, options }: FsUploaderDoUpl
 }
 
 export async function upload(context: FsUploaderDoUploadOptions): Promise<FsUploaderResult> {
-  const { getConfig } = useUploader();
-  const global = getConfig("cos");
-  const options = context.options;
-  const config = merge(cloneDeep(global), options);
+  var { getConfig } = useUploader();
+  var global = getConfig("cos");
+  var options = context.options;
+  var config = merge(cloneDeep(global), options);
   context.options = config;
   return await doUpload(context);
 }
