@@ -1,9 +1,9 @@
 import FsPhoneInput from "./fs-phone-input.vue";
 
 export async function getParsePhoneNumberFromString({ phoneNumber, countryCode }: any) {
-  let phoneNumberLib = await import("libphonenumber-js/max");
-  let parsePhoneNumberFromString = phoneNumberLib.parsePhoneNumberFromString;
-  let parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null;
+  const phoneNumberLib = await import("libphonenumber-js/max");
+  const parsePhoneNumberFromString = phoneNumberLib.parsePhoneNumberFromString;
+  const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null;
   return {
     phoneNumber: phoneNumber || null,
     countryCode: countryCode,
@@ -24,9 +24,9 @@ export async function getParsePhoneNumberFromString({ phoneNumber, countryCode }
 }
 
 async function getCountryByValue(value: any) {
-  let asyncModules = import.meta.glob("./utils.ts");
+  const asyncModules = import.meta.glob("./utils.ts");
   // @ts-ignore
-  let { getCountryByValue } = await asyncModules["./utils.ts"]();
+  const { getCountryByValue } = await asyncModules["./utils.ts"]();
   return getCountryByValue(value);
 }
 
@@ -43,12 +43,12 @@ export async function phoneNumberValidator(rule: any, value: any) {
   }
 
   if (!value.countryCode && value.callingCode) {
-    let country = await getCountryByValue(value);
+    const country = await getCountryByValue(value);
     if (country) {
       value.countryCode = country.countryCode;
     }
   }
-  let parse = await getParsePhoneNumberFromString({
+  const parse = await getParsePhoneNumberFromString({
     phoneNumber: value.phoneNumber,
     countryCode: value.countryCode
   });
@@ -78,12 +78,12 @@ export async function mobileValidator(rule: any, value: any, callback: any) {
   }
 
   if (!value.countryCode && value.callingCode) {
-    let country = await getCountryByValue(value);
+    const country = await getCountryByValue(value);
     if (country) {
       value.countryCode = country.countryCode;
     }
   }
-  let parse = await getParsePhoneNumberFromString({
+  const parse = await getParsePhoneNumberFromString({
     phoneNumber: value.phoneNumber,
     countryCode: value.countryCode
   });
@@ -101,9 +101,9 @@ export async function mobileValidator(rule: any, value: any, callback: any) {
  * @returns {boolean|*}
  */
 export async function mobileRequiredValidator(rule: any, value: any) {
-  let noCountryCode = value.countryCode == null || value.countryCode === "";
-  let noCallingCode = value.callingCode == null || value.callingCode === "";
-  let noPhoneNumber = value.phoneNumber == null || value.phoneNumber === "";
+  const noCountryCode = value.countryCode == null || value.countryCode === "";
+  const noCallingCode = value.callingCode == null || value.callingCode === "";
+  const noPhoneNumber = value.phoneNumber == null || value.phoneNumber === "";
   if (!value || noPhoneNumber || (noCountryCode && noCallingCode)) {
     throw new Error("该项必填");
   }
