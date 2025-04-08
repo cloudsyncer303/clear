@@ -1,23 +1,23 @@
 import getPathToString from "./getPathToString.js";
-var rxVarName = /^[a-zA-Z_$]+([\w_$]*)$/;
-var rxQuot = /"/g;
-var has = Object.prototype.hasOwnProperty;
+const rxVarName = /^[a-zA-Z_$]+([\w_$]*)$/;
+const rxQuot = /"/g;
+const has = Object.prototype.hasOwnProperty;
 
 export function isObject(value: any) {
-  var type = typeof value;
+  const type = typeof value;
   return value != null && (type == "object" || type == "function");
 }
 
 export default function getIterate(_: any) {
-  var pathToString = getPathToString(_);
+  const pathToString = getPathToString(_);
 
   function iterate(item: any) {
-    var { options, obj, callback } = item;
+    const { options, obj, callback } = item;
     options.pathFormatArray = options.pathFormat == "array";
     item.depth = 0;
 
     let broken = false;
-    var breakIt = () => {
+    const breakIt = () => {
       broken = true;
       return false;
     };
@@ -49,8 +49,8 @@ export default function getIterate(_: any) {
         item.children = [];
         if (options.childrenPath) {
           options.childrenPath.forEach((cp: any, i: any) => {
-            var children = _.get(item.value, cp);
-            var info: any = describeValue(children, options.ownPropertiesOnly);
+            const children = _.get(item.value, cp);
+            const info: any = describeValue(children, options.ownPropertiesOnly);
             if (!info.isEmpty) {
               item.children.push([cp, options.strChildrenPath[i], children, info]);
             }
@@ -66,7 +66,7 @@ export default function getIterate(_: any) {
         item.needCallback = (item.depth || options.includeRoot) && (!options.leavesOnly || item.isLeaf);
 
         if (item.needCallback) {
-          var contextReader = new ContextReader(obj, options, breakIt);
+          const contextReader = new ContextReader(obj, options, breakIt);
           contextReader.setItem(item, false);
           try {
             item.res = callback(item.value, item.key, item.parent && item.parent.value, contextReader);
@@ -115,7 +115,7 @@ export default function getIterate(_: any) {
       }
 
       if (item.needCallback && options.callbackAfterIterate) {
-        var contextReader = new ContextReader(obj, options, breakIt);
+        const contextReader = new ContextReader(obj, options, breakIt);
         contextReader.setItem(item, true);
 
         try {
@@ -144,14 +144,14 @@ export default function getIterate(_: any) {
       }
       strChildPathPrefix += strChildrenPath || "";
     }
-    var res = [];
+    const res = [];
     for (let i = 0; i < children.length; i++) {
-      var val = children[i];
+      const val = children[i];
       if (val === undefined && !(i in children)) {
         continue;
       }
       let strChildPath;
-      var pathFormatString = !options.pathFormatArray;
+      const pathFormatString = !options.pathFormatArray;
       if (pathFormatString) {
         strChildPath = `${strChildPathPrefix}[${i}]`;
       }
@@ -186,9 +186,9 @@ export default function getIterate(_: any) {
       }
       strChildPathPrefix += strChildrenPath || "";
     }
-    var res = [];
-    var pathFormatString = !options.pathFormatArray;
-    for (var childKey in children) {
+    const res = [];
+    const pathFormatString = !options.pathFormatArray;
+    for (const childKey in children) {
       if (options.ownPropertiesOnly && !has.call(children, childKey)) {
         continue;
       }
@@ -297,7 +297,7 @@ class ContextReader {
 }
 
 function isObjectEmpty(value: any, ownPropertiesOnly: any) {
-  for (var key in value) {
+  for (const key in value) {
     if (!ownPropertiesOnly || has.call(value, key)) {
       return false;
     }
@@ -306,7 +306,7 @@ function isObjectEmpty(value: any, ownPropertiesOnly: any) {
 }
 
 function describeValue(value: any, ownPropertiesOnly: any) {
-  var res: any = { isObject: isObject(value) };
+  const res: any = { isObject: isObject(value) };
   res.isArray = res.isObject && Array.isArray(value);
   res.isEmpty = res.isArray ? !value.length : res.isObject ? isObjectEmpty(value, ownPropertiesOnly) : true;
 
