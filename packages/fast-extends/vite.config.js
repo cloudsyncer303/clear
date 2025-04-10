@@ -9,7 +9,7 @@ import _ from "lodash";
 var { resolve } = path;
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
-  const build = {};
+  let build = {};
   if (mode === "umd") {
     build = {
       build: {
@@ -92,7 +92,7 @@ export default ({ command, mode }) => {
         output: {
           manualChunks(id) {
             if (id.includes("src/components") && id.lastIndexOf(".vue") > 0) {
-              const name = id.substring(id.lastIndexOf("/") + 1);
+              let name = id.substring(id.lastIndexOf("/") + 1);
               name = name.substring(0, name.indexOf("."));
               return "components/" + name;
             }
