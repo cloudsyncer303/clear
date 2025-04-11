@@ -268,8 +268,8 @@ export type OpenDialogProps<R = any> = {
   /**
    * 是否新创建一个实例打开
    * 当使用新建实例打开时，无法通过getFormWrapperRef获取到表单ref，你可以从openDialog的返回值中拿到ref
-   * const {openDialog} = useFormWrapper()
-   * const wrapperRef = await openDialog(props:OpenDialogProps)
+   * let {openDialog} = useFormWrapper()
+   * let wrapperRef = await openDialog(props:OpenDialogProps)
    */
   newInstance?: boolean;
   /**
