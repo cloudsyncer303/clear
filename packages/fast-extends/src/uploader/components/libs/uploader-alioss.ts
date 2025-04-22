@@ -14,9 +14,9 @@ export async function getSts(config: FsUploaderGetAuthContext): Promise<FsUpload
   if (sts != null && sts.expiresTime > new Date().getTime()) {
     return sts;
   }
-  var options = config as FsUploaderAliossOptions;
+  const options = config as FsUploaderAliossOptions;
   // 需要重新获取sts
-  var ret = await options.getAuthorization(config);
+  const ret = await options.getAuthorization(config);
   sts = ret;
   if (sts.expiresTime == null) {
     sts.expiresTime = new Date().getTime() + parseInt(ret.expiration);
@@ -82,10 +82,10 @@ export async function getOssClient(
  * @returns  上传结果 {url:xxx}
  */
 async function doUpload(opts: FsUploaderDoUploadOptions): Promise<FsUploaderResult> {
-  var { file, fileName, onProgress } = opts;
-  var options: FsUploaderAliossOptions = opts.options as FsUploaderAliossOptions;
-  var build_key = await buildKey(file, fileName, options);
-  var { client, key } = await getOssClient(options, build_key, file);
+  const { file, fileName, onProgress } = opts;
+  const options: FsUploaderAliossOptions = opts.options as FsUploaderAliossOptions;
+  const build_key = await buildKey(file, fileName, options);
+  const { client, key } = await getOssClient(options, build_key, file);
   await client.put(key, file);
   let result: any = { url: options.domain + "/" + key, key: key };
   if (options.successHandle) {
@@ -106,11 +106,11 @@ async function doUpload(opts: FsUploaderDoUploadOptions): Promise<FsUploaderResu
 }
 
 export async function upload(context: FsUploaderDoUploadOptions): Promise<FsUploaderResult> {
-  var { getConfig } = useUploader();
-  var global = getConfig("alioss");
+  const { getConfig } = useUploader();
+  const global = getConfig("alioss");
 
-  var options = context.options;
-  var config = merge(cloneDeep(global), options);
+  const options = context.options;
+  const config = merge(cloneDeep(global), options);
   context.options = config;
   return await doUpload(context);
 }
