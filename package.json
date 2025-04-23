@@ -1,0 +1,72 @@
+{
+  "name": "fast-crud-root",
+  "version": "1.9.0",
+  "private": true,
+  "scripts": {
+    "bootstrap": "lerna bootstrap --hoist",
+    "docs:dev": "vitepress dev docs/zh",
+    "docs:dev:en": "vitepress dev docs/zh",
+    "docs:build": "vitepress build docs/zh",
+    "docs:serve": "vitepress serve docs/zh",
+    "docgen:crud": "vue-docgen -c docgen/crud.config.js",
+    "docgen:extends": "vue-docgen -c docgen/extends.config.js",
+    "docgen:all": "npm run docgen:crud && npm run docgen:extends",
+    "prepublishOnly": "npm run before-build && lerna run build --scope @fast-crud/fast-crud --scope @fast-crud/fs-admin-antdv  --scope @fast-crud/fast-extends --scope */ui-* ",
+    "publish": "npm run prepublishOnly  && lerna publish --conventional-commits --create-release github && npm run afterpublishOnly",
+    "publish:canary": "lerna publish --canary --conventional-commits && npm run afterpublishOnly",
+    "afterpublishOnly": "npm run copylogs && npm run afterPubPush && lerna run afterPubPush && node deploy.js",
+    "afterPubPush": "npm run docgen:all & git add . && git commit -m \"build: publish success\" && git push",
+    "pubcheck": "node --experimental-json-modules publish-check.mjs",
+    "before-build": "npm run pubcheck && cd ./packages/ui/ui-interface && time /t >build.md && git add ./build.md && git commit -m \"build: prepare to build\"",
+    "copylogs": "copyfiles \"packages/**/CHANGELOG.md\"  ./docs/zh/guide/other/changelogs/ -e **/node_modules/** && copyfiles \"CHANGELOG.md\"  ./docs/zh/guide/other/changelogs/",
+    "init": "git submodule update --init --recursive",
+    "rechangelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "no-push": "lerna publish --no-push --conventional-commits && lerna publish && npm run copylogs",
+    "checkout:main": "git checkout main && cd ./packages/fast-admin/fs-admin-element && git checkout main && cd ../fs-admin-antdv && git checkout main  && cd ../fs-admin-naive-ui && git checkout main && cd ../../  ",
+    "checkout:dev": "git checkout dev && cd ./packages/fast-admin/fs-admin-element && git checkout dev && cd ../fs-admin-antdv && git checkout dev  && cd ../fs-admin-naive-ui && git checkout dev && cd ../../  "
+  },
+  "author": "greper",
+  "license": "MIT",
+  "devDependencies": {
+    "@algolia/client-search": "^4.22.1",
+    "@lerna-lite/cli": "^3.2.1",
+    "@lerna-lite/publish": "^3.2.1",
+    "@lerna-lite/run": "^3.2.1",
+    "@lerna-lite/version": "^3.2.1",
+    "@mdit-vue/shared": "^2.0.0",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/flexsearch": "^0.7.3",
+    "@types/glob-to-regexp": "^0.4.4",
+    "@types/lodash-es": "^4.17.12",
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "20.11.9",
+    "axios": "^1.6.7",
+    "copyfiles": "^2.4.1",
+    "glob-to-regexp": "^0.4.1",
+    "markdown-it": "^13.0.1",
+    "typedoc": "^0.25.7",
+    "typedoc-plugin-markdown": "^3.17.1",
+    "vite": "^5.0.12",
+    "vite-plugin-static-copy": "^1.0.1",
+    "vitepress": "2.0.0-alpha.4",
+    "vue": "^3.4.15",
+    "vue-docgen-cli": "^4.67.0",
+    "vue-tsc": "^1.8.27"
+  },
+  "dependencies": {
+    "@types/flexsearch": "^0.7.6",
+    "@types/markdown-it": "^13.0.7",
+    "glob-to-regexp": "^0.4.1",
+    "markdown-it": "^14.0.0",
+    "typescript": "^5.3.3"
+  },
+  "workspaces": [
+    "packages/**"
+  ],
+  "engines": {
+    "node": ">=20.10.0",
+    "pnpm": ">=8.15.7"
+  }
+}
